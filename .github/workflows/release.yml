@@ -34,7 +34,7 @@ jobs:
             dist/extension-webstore.zip
       - name: Keep build artifacts
         if: ${{ !startsWith(github.ref, 'refs/tags/') }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: dist
           path: |
