@@ -137,3 +137,9 @@ The **☕ Support the project** button in the settings opens the page set in `ex
 - `donatePl`: e.g. buycoffee.to, used when the UI is in Polish.
 
 The button is hidden while both are empty.
+
+## Support
+If the extension saves you time, you can support it on [Ko-fi](https://ko-fi.com/kepak1). Donations go towards code-signing certificates, so the helper installs without security warnings on macOS and Windows.
+
+## License
+MIT – see [LICENSE](LICENSE). pdf.js (Apache 2.0) and pdf-lib (MIT) keep their own licenses.
