@@ -14,10 +14,11 @@ jobs:
   build:
     runs-on: macos-latest # pkgbuild / lipo are only available on macOS
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
         with:
           go-version-file: helper/go.mod
+          cache-dependency-path: helper/go.sum
       - name: Build
         run: bash helper/build.sh
       - name: Publish release
