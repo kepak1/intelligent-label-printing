@@ -1,0 +1,41 @@
+# Builds the helper installers and the extension package, and publishes them
+# as a GitHub release when a version tag (e.g. v2.0.0) is pushed.
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: macos-latest # pkgbuild / lipo are only available on macOS
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: helper/go.mod
+      - name: Build
+        run: bash helper/build.sh
+      - name: Publish release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            dist/LabelPrintingHelper-macOS.pkg
+            dist/LabelPrintingHelper-Windows-x64.exe
+            dist/LabelPrintingHelper-Windows-arm64.exe
+            dist/LabelPrintingHelper-Linux-x64
+            dist/extension-webstore.zip
+      - name: Keep build artifacts
+        if: ${{ !startsWith(github.ref, 'refs/tags/') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: |
+            dist/*
+            !dist/extension-webstore-first-upload.zip

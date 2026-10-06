@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings – Intelligent label printing</title>
+<link rel="icon" href="icons/icon32.png">
+<link rel="stylesheet" href="ui.css">
+<style>
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 24px 16px 60px; }
+  header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+  header img { width: 40px; }
+  header h1 { font-size: 20px; }
+  header p { margin: 2px 0 0; }
+  .grid { display: grid; grid-template-columns: 260px 1fr; gap: 16px; align-items: start; }
+  .list { padding: 8px; display: grid; gap: 6px; }
+  .item { text-align: left; padding: 9px 10px; border-radius: 8px; border: 1px solid transparent; background: none; width: 100%; }
+  .item:hover { border-color: var(--border); }
+  .item.sel { border-color: var(--accent); background: var(--accent-soft); }
+  .item b { display: block; }
+  .item small { color: var(--muted); }
+  .item .star { color: var(--accent); font-size: 11px; font-weight: 600; }
+  .editor { padding: 18px 20px; }
+  .editor h2, section h2 { font-size: 14px; margin-bottom: 14px; }
+  fieldset { border: 0; border-top: 1px solid var(--border); padding: 14px 0 0; margin: 14px 0 0; }
+  legend { font-weight: 600; padding-right: 8px; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 14px; }
+  .bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 18px; }
+  .hint { font-size: 12px; color: var(--muted); margin: -6px 0 12px; }
+  section { margin-top: 16px; padding: 18px 20px; }
+  .printerline { display: flex; gap: 8px; }
+  .printerline select { flex: 1; }
+  #saved { font-size: 12px; color: var(--ok); opacity: 0; transition: opacity .3s; align-self: center; }
+  #saved.on { opacity: 1; }
+  pre { background: var(--accent-soft); padding: 10px 12px; border-radius: 8px; overflow: auto; font-size: 12px; }
+  .positions { display: grid; grid-template-columns: repeat(2, 56px); gap: 4px; }
+  .positions button { height: 70px; padding: 0; font-size: 11px; color: var(--muted); }
+  .positions button.sel { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  .sheetonly[hidden], .customonly[hidden] { display: none; }
+  header .grow { flex: 1; }
+  header label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
+  header select { width: auto; }
+  .warn { border: 1px solid color-mix(in srgb, var(--warn) 45%, transparent); background: color-mix(in srgb, var(--warn) 12%, transparent); border-radius: 8px; padding: 10px 12px; margin: 0 0 12px; font-size: 12px; }
+  .warn button { margin-top: 8px; }
+  .warn[hidden], .hint[hidden], .status[hidden] { display: none; }
+  .donate { text-decoration: none; color: var(--text); border: 1px solid var(--border); background: var(--panel); border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 12px; }
+  .donate:hover { border-color: #f59e0b; background: color-mix(in srgb, #f59e0b 14%, var(--panel)); }
+  .donate[hidden] { display: none; }
+  .steps { margin: 12px 0 0; padding-left: 20px; }
+  .steps li { margin-bottom: 4px; }
+  a.button { display: inline-block; text-decoration: none; color: inherit; border: 1px solid var(--border); background: var(--panel); border-radius: 8px; padding: 7px 12px; }
+  a.button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-text); font-weight: 600; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .row, .row3 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <img src="icons/icon128.png" alt="">
+    <div class="grow"><h1 data-i18n="appName"></h1><p class="muted" data-i18n="optSubtitle"></p></div>
+    <a class="donate" id="donate" target="_blank" rel="noopener" hidden data-i18n="donate" data-i18n-title="donateHint"></a>
+    <label><span data-i18n="language"></span><select id="lang"></select></label>
+  </header>
+
+  <div class="grid">
+    <div class="panel list" id="list"></div>
+
+    <div class="panel editor" id="editor">
+      <h2 id="edTitle"></h2>
+      <label class="field"><span data-i18n="profileName"></span><input type="text" data-k="name"></label>
+
+      <fieldset><legend data-i18n="printerSection"></legend>
+        <label class="field"><span data-i18n="systemPrinter"></span>
+          <div class="printerline"><select data-k="printer" id="printer"></select><button id="refresh" data-i18n-title="refreshPrinters">↻</button></div>
+        </label>
+        <div class="row">
+          <label class="field"><span data-i18n="driverMedia"></span><select data-k="media" id="media"></select></label>
+          <label class="field"><span data-i18n="printerScaling"></span>
+            <select data-k="printerScaling">
+              <option value="none" data-i18n="scalingNone"></option>
+              <option value="fit" data-i18n="scalingFit"></option>
+            </select></label>
+        </div>
+        <div class="warn" id="mediaWarn" hidden><span id="mediaWarnText"></span><br><button class="small" id="useMedia" data-i18n="mediaMismatchFix"></button></div>
+        <label class="field" style="max-width:140px"><span data-i18n="copies"></span><input type="number" min="1" max="20" data-k="copies"></label>
+      </fieldset>
+
+      <fieldset><legend data-i18n="paperSection"></legend>
+        <label class="field"><span data-i18n="loadedPaper"></span><select data-k="paper" id="paper"></select></label>
+        <div class="row customonly" id="customRow">
+          <label class="field"><span data-i18n="widthMm"></span><input type="number" step="0.1" data-k="paperW"></label>
+          <label class="field"><span data-i18n="heightMm"></span><input type="number" step="0.1" data-k="paperH"></label>
+        </div>
+        <div class="sheetonly" id="sheetOpts">
+          <p class="hint" data-i18n="sheetHint"></p>
+          <div class="row">
+            <label class="field"><span data-i18n="perSheet"></span>
+              <select data-k="perSheet"><option value="1">1</option><option value="2" data-i18n="perSheet2"></option><option value="4">4</option></select></label>
+            <label class="check" style="margin-top:22px"><input type="checkbox" data-k="cutMarks"> <span data-i18n="cutMarks"></span></label>
+          </div>
+          <div class="field" id="posField"><span class="muted" style="font-size:12px;display:block;margin-bottom:4px" data-i18n="position"></span>
+            <div class="positions" id="positions">
+              <button data-pos="tl" data-i18n-html="posTl"></button><button data-pos="tr" data-i18n-html="posTr"></button>
+              <button data-pos="bl" data-i18n-html="posBl"></button><button data-pos="br" data-i18n-html="posBr"></button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <label class="field"><span data-i18n="margin"></span><input type="number" step="0.5" min="0" data-k="margin"></label>
+          <div>
+            <label class="check" style="margin-top:22px"><input type="checkbox" data-k="autoRotate"> <span data-i18n="autoRotate"></span></label>
+            <label class="check"><input type="checkbox" data-k="upscale"> <span data-i18n="upscale"></span></label>
+          </div>
+        </div>
+        <p class="hint" id="unprintableHint" hidden></p>
+      </fieldset>
+
+      <fieldset><legend data-i18n="detectSection"></legend>
+        <label class="field"><span data-i18n="cropMode"></span>
+          <select data-k="cropMode">
+            <option value="auto" data-i18n="cropAuto"></option>
+            <option value="all" data-i18n="cropAll"></option>
+            <option value="largest" data-i18n="cropLargest"></option>
+            <option value="split" data-i18n="cropSplit"></option>
+          </select></label>
+        <div class="row3">
+          <label class="field"><span data-i18n="padding"></span><input type="number" step="0.5" min="0" data-k="padding"></label>
+          <label class="field"><span data-i18n="gap"></span><input type="number" step="1" min="1" data-k="gap"></label>
+          <label class="field"><span data-i18n="threshold"></span><input type="number" min="100" max="254" data-k="threshold"></label>
+        </div>
+        <p class="hint" data-i18n="detectHint"></p>
+      </fieldset>
+
+      <div class="bar">
+        <button class="primary" id="makeActive" data-i18n="setActive"></button>
+        <button id="duplicate" data-i18n="duplicate"></button>
+        <button id="test" data-i18n="testFile"></button>
+        <button class="danger" id="remove" data-i18n="deleteProfile"></button>
+        <span id="saved" data-i18n="saved"></span>
+      </div>
+    </div>
+  </div>
+
+  <section class="panel">
+    <h2 data-i18n="autoSection"></h2>
+    <label class="check"><input type="checkbox" id="autoEnabled"> <span data-i18n="autoEnabled"></span></label>
+    <label class="field"><span data-i18n="autoDomains"></span><textarea id="autoDomains" rows="3"></textarea></label>
+    <label class="check"><input type="checkbox" id="notifications"> <span data-i18n="notifications"></span></label>
+  </section>
+
+  <section class="panel">
+    <h2 data-i18n="backupSection"></h2>
+    <p class="muted" data-i18n="backupHint"></p>
+    <div class="bar" style="margin-top:0">
+      <button id="exportBtn" data-i18n="exportBtn"></button>
+      <button id="importBtn" data-i18n="importBtn"></button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+    </div>
+    <div class="status info" id="importBox" hidden style="margin-top:12px">
+      <div id="importText"></div>
+      <div class="bar" style="margin-top:10px">
+        <button class="primary small" id="importReplace" data-i18n="importReplace"></button>
+        <button class="small" id="importMerge" data-i18n="importMerge"></button>
+        <button class="small" id="importCancel" data-i18n="cancel"></button>
+      </div>
+    </div>
+    <div class="status" id="importResult" hidden style="margin-top:12px"></div>
+  </section>
+
+  <section class="panel">
+    <h2 data-i18n="hostSection"></h2>
+    <p id="hostStatus"><span class="dot"></span></p>
+    <p class="muted" data-i18n-html="hostExplain"></p>
+    <div id="helperInstall" hidden>
+      <div class="bar" id="helperButtons" style="margin-top:0"></div>
+      <ol class="steps" id="helperSteps"></ol>
+    </div>
+    <div id="helperDev" hidden>
+      <p data-i18n="helperDev"></p>
+      <pre id="installCmd"></pre>
+    </div>
+    <div class="bar"><button id="checkHost" data-i18n="checkAgain"></button></div>
+    <p class="muted"><span data-i18n="extensionId"></span> <code id="extId"></code></p>
+  </section>
+</div>
+<script type="module" src="options.js"></script>
+</body>
+</html>

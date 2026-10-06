@@ -1,0 +1,12 @@
+#!/bin/bash
+# Runs as root after the .pkg is installed.
+HELPER="/Library/Application Support/IntelligentLabelPrinting/ilp-host"
+chmod 755 "$HELPER"
+"$HELPER" install --system
+
+# Remove older per-user registrations (they would take precedence over the system one).
+CONSOLE_USER=$(stat -f%Su /dev/console)
+if [ -n "$CONSOLE_USER" ] && [ "$CONSOLE_USER" != "root" ]; then
+  sudo -u "$CONSOLE_USER" "$HELPER" uninstall >/dev/null 2>&1 || true
+fi
+exit 0

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Intelligent label printing</title>
+<link rel="stylesheet" href="ui.css">
+<style>
+  body { width: 360px; padding: 14px; }
+  header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  header img { width: 28px; height: 28px; }
+  header h1 { font-size: 15px; flex: 1; }
+  header select { width: auto; padding: 2px 4px; font-size: 12px; }
+  .iconbtn { border: none; background: none; font-size: 17px; padding: 4px 6px; }
+  .profiles { display: grid; gap: 6px; margin-bottom: 12px; }
+  .profile { display: flex; align-items: center; gap: 10px; padding: 9px 10px; cursor: pointer; text-align: left; width: 100%; }
+  .profile.active { border-color: var(--accent); background: var(--accent-soft); }
+  .profile .radio { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--muted); flex: none; }
+  .profile.active .radio { border-color: var(--accent); background: radial-gradient(var(--accent) 45%, transparent 50%); }
+  .profile b { display: block; font-weight: 600; }
+  .profile small { color: var(--muted); }
+  .actions { display: flex; gap: 8px; margin-bottom: 8px; }
+  .actions .primary { flex: 1; padding: 10px; font-size: 14px; }
+  h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); margin: 14px 0 6px; }
+  .dl { display: flex; align-items: center; gap: 6px; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .dl:last-child { border-bottom: none; }
+  .dl .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dl .name small { display: block; color: var(--muted); }
+  .host { font-size: 12px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  #status:empty { display: none; }
+  #status { margin-top: 8px; }
+  .linkbtn { border: none; background: none; color: var(--accent); padding: 0; }
+</style>
+</head>
+<body>
+  <header>
+    <img src="icons/icon48.png" alt="">
+    <h1 data-i18n="appName"></h1>
+    <select id="lang" data-i18n-title="language"></select>
+    <button class="iconbtn" id="openOptions" data-i18n-title="settings">⚙︎</button>
+  </header>
+
+  <div class="profiles" id="profiles"></div>
+
+  <div class="actions">
+    <button class="primary" id="printTab" data-i18n="printTab"></button>
+    <button id="previewTab" data-i18n="preview" data-i18n-title="previewHint"></button>
+  </div>
+  <div id="status" class="status"></div>
+
+  <h2 data-i18n="recentPdfs"></h2>
+  <div class="panel" id="downloads"><div class="dl muted" data-i18n="loading"></div></div>
+
+  <div class="host">
+    <span id="hostState"><span class="dot"></span><span data-i18n="hostChecking"></span></span>
+    <button class="linkbtn" id="openFile" data-i18n="openFile"></button>
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

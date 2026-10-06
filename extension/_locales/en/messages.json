@@ -1,0 +1,5 @@
+{
+  "extName": { "message": "Intelligent label printing" },
+  "extDescription": { "message": "Prints courier labels in one click: crops white margins and fits the label to A6 or an A4 sheet." },
+  "cmdPrintCurrent": { "message": "Print the label from the current tab (active profile)" }
+}

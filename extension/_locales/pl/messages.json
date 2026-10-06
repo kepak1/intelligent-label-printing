@@ -1,0 +1,5 @@
+{
+  "extName": { "message": "Intelligent label printing" },
+  "extDescription": { "message": "Drukuje etykiety kurierskie jednym kliknięciem: obcina białe marginesy i dopasowuje etykietę do A6 lub arkusza A4." },
+  "cmdPrintCurrent": { "message": "Drukuj etykietę z bieżącej karty (aktywny profil)" }
+}
