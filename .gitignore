@@ -3,3 +3,4 @@ keys/
 dist/
 .DS_Store
 .claude/
+store/screenshots/node_modules/

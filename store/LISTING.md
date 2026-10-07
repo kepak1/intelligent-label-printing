@@ -145,7 +145,16 @@ https://github.com/kepak1/intelligent-label-printing/blob/main/PRIVACY.md
 
 ---
 
-## Assets to prepare
-- Store icon 128×128: `extension/icons/icon128.png`.
-- Screenshots 1280×800 (1–5): popup with profiles, settings with a printer profile, preview with a cropped label, before/after (A4 sheet → A6 label).
-- Small promo tile 440×280 (optional), e.g. "Free label printing – crop & print in one click".
+## Images
+Ready in `store/images/`, in English (`-en`) and Polish (`-pl`). Upload the English set to the default listing and the Polish set to the Polish listing.
+
+| File | Store field |
+|---|---|
+| `screenshot-1-*.png` … `screenshot-5-*.png` (1280×800) | Screenshots, in this order: 1 before/after, 2 popup, 3 settings, 4 preview, 5 plain A4 |
+| `promo-small-440x280-*.png` | Small promo tile |
+| `promo-marquee-1400x560-*.png` | Marquee promo tile (optional) |
+| `extension/icons/icon128.png` | Store icon |
+
+The label in the images is a made-up sample: fictional courier, names and addresses, no real carrier branding.
+
+To regenerate the images after UI changes, run `store/screenshots/build.sh`. It needs Node.js, Google Chrome and the installed helper.

@@ -38,20 +38,66 @@ async function renderPage(page, scale) {
 
 // Splits page content into blocks (clusters of "ink" within the gap tolerance).
 // Returns rectangles in render pixels.
+// Erases thin dashed or dotted lines (e.g. "cut here" lines across an A4
+// sheet). They would otherwise connect the label with instructions printed
+// next to it. Solid lines such as label borders are kept.
+function removeDashedLines(ink, W, H, pxPerMm) {
+  const edge = 2; // a thin line has no ink 2 px above/below (left/right) it
+  const maxRun = 6 * pxPerMm; // longest dash
+  const maxGap = 3 * pxPerMm; // longest gap between dashes
+  const minRuns = 6;
+  const clear = [];
+
+  // pos(i, j): pixel index for the i-th pixel along line j; len/count: line length/number
+  const scan = (len, count, pos, neighbourOffset) => {
+    for (let j = edge; j < count - edge; j++) {
+      const runs = [];
+      let start = -1;
+      for (let i = 0; i <= len; i++) {
+        const p = i < len ? pos(i, j) : -1;
+        const thin = p >= 0 && ink[p] && !ink[p - neighbourOffset * edge] && !ink[p + neighbourOffset * edge];
+        if (thin && start < 0) start = i;
+        if (!thin && start >= 0) { runs.push([start, i]); start = -1; }
+      }
+      // chains of short runs with short gaps
+      let a = 0;
+      while (a < runs.length) {
+        let b = a;
+        let covered = 0;
+        while (b < runs.length && runs[b][1] - runs[b][0] <= maxRun && (b === a || runs[b][0] - runs[b - 1][1] <= maxGap)) {
+          covered += runs[b][1] - runs[b][0];
+          b++;
+        }
+        if (b === a) { a++; continue; }
+        const extent = runs[b - 1][1] - runs[a][0];
+        if (b - a >= minRuns && extent >= len * 0.25 && covered / extent <= 0.9) {
+          for (let k = a; k < b; k++) for (let i = runs[k][0]; i < runs[k][1]; i++) clear.push(pos(i, j));
+        }
+        a = b;
+      }
+    }
+  };
+  scan(W, H, (x, y) => y * W + x, W); // horizontal lines
+  scan(H, W, (y, x) => y * W + x, 1); // vertical lines
+  for (const p of clear) ink[p] = 0;
+}
+
 function findBlocks(imageData, pxPerMm, { threshold, gap }) {
   const { width: W, height: H, data } = imageData;
+  const ink = new Uint8Array(W * H);
+  for (let p = 0, i = 0; p < ink.length; p++, i += 4) {
+    if (data[i] < threshold || data[i + 1] < threshold || data[i + 2] < threshold) ink[p] = 1;
+  }
+  removeDashedLines(ink, W, H, pxPerMm);
+
   const cell = Math.max(2, Math.round(pxPerMm)); // ~1 mm
   const gw = Math.ceil(W / cell);
   const gh = Math.ceil(H / cell);
   const grid = new Uint8Array(gw * gh);
   for (let y = 0; y < H; y++) {
-    const row = y * W * 4;
     const gy = ((y / cell) | 0) * gw;
     for (let x = 0; x < W; x++) {
-      const i = row + x * 4;
-      if (data[i] < threshold || data[i + 1] < threshold || data[i + 2] < threshold) {
-        grid[gy + ((x / cell) | 0)] = 1;
-      }
+      if (ink[y * W + x]) grid[gy + ((x / cell) | 0)] = 1;
     }
   }
 
