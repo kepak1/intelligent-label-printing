@@ -121,13 +121,12 @@ Crops courier/shipping label PDFs to the label itself and prints them on the pri
 | Permission | Justification |
 |---|---|
 | `nativeMessaging` | Sends the cropped label to the user's optional helper app, which prints it on the chosen printer without a print dialog and lists the installed printers and paper sizes. |
-| Host permissions (`<all_urls>`) | Reads the label PDF the user asks to print – from the current tab or a right-clicked link – on any courier or marketplace website, including sites that require the user to be logged in. The extension does not inject scripts into pages or read page content. |
-| `downloads` | Lists recently downloaded PDFs in the popup so they can be printed with one click, and (only if the user enables it) prints PDFs downloaded from domains the user specifies. |
+| `activeTab` | Reads the label PDF from the tab where the user clicked the toolbar button, used the keyboard shortcut or the right-click menu. Access is limited to that tab and that moment; the extension has no host permissions and does not inject scripts into pages. |
+| `downloads` | Lists recently downloaded PDFs in the popup so they can be printed with one click; downloads a right-clicked PDF link from another site through Chrome (using the user's login) so it can be printed; and, only if the user enables it, prints PDFs downloaded from domains the user specifies. |
 | `contextMenus` | Adds "Print with profile …" to the right-click menu of links and pages. |
 | `offscreen` | Renders and crops PDFs (pdf.js) in an offscreen document, because service workers have no canvas. |
 | `storage` | Saves the user's printer profiles and settings locally. |
 | `notifications` | Confirms that a label was sent to the printer, or explains why printing failed. |
-| `tabs` | Reads the URL of the active tab when the user clicks "Print PDF from this tab". |
 
 ### Remote code
 No, I am not using remote code. All code (including pdf.js and pdf-lib) is bundled in the package.

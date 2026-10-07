@@ -69,11 +69,43 @@ async function getBytes(source) {
       return { bytes: await readViaHost(fileUrlToPath(url)), name: nameFromUrl(url) };
     }
     if (!/^https?:/.test(url)) throw new I18nError('errTabUnreadable');
-    const res = await fetch(url, { credentials: 'include' });
+    // activeTab gives access to the clicked tab's site only; a PDF linked from
+    // another site is downloaded by Chrome instead (with the user's login) and
+    // read by the helper.
+    let res;
+    try {
+      res = await fetch(url, { credentials: 'include' });
+    } catch {
+      return downloadAndRead(url);
+    }
     if (!res.ok) throw new I18nError('errHttp', { status: res.status });
     return { bytes: new Uint8Array(await res.arrayBuffer()), name: nameFromUrl(url) };
   }
   throw new I18nError('errUnknownSource');
+}
+
+async function downloadAndRead(url) {
+  const id = await chrome.downloads.download({ url, saveAs: false, conflictAction: 'uniquify' });
+  const state = await new Promise((resolve) => {
+    const timer = setTimeout(() => done('timeout'), 120000);
+    function done(s) {
+      clearTimeout(timer);
+      chrome.downloads.onChanged.removeListener(listener);
+      resolve(s);
+    }
+    function listener(delta) {
+      if (delta.id !== id || !delta.state) return;
+      if (delta.state.current === 'complete' || delta.state.current === 'interrupted') done(delta.state.current);
+    }
+    chrome.downloads.onChanged.addListener(listener);
+    // the download may already be finished
+    chrome.downloads.search({ id }).then(([item]) => {
+      if (item?.state === 'complete' || item?.state === 'interrupted') done(item.state);
+    });
+  });
+  const [item] = await chrome.downloads.search({ id });
+  if (state !== 'complete' || !item) throw new I18nError('errDownloadFailed');
+  return { bytes: await readViaHost(item.filename), name: item.filename.split(/[\\/]/).pop() };
 }
 
 // ---------- processing in the offscreen document ----------
@@ -265,7 +297,8 @@ chrome.downloads.onChanged.addListener(async (delta) => {
   const settings = await loadSettings();
   if (!settings.autoPrint.enabled) return;
   const [item] = await chrome.downloads.search({ id: delta.id });
-  if (!item) return;
+  // skip downloads the extension started itself (it is already printing them)
+  if (!item || item.byExtensionId === chrome.runtime.id) return;
   const isPdf = item.mime === 'application/pdf' || /\.pdf$/i.test(item.filename);
   if (isPdf && matchesDomain(item, settings.autoPrint.domains)) run({ kind: 'download', id: item.id });
 });

@@ -51,6 +51,7 @@ const en = {
   // background
   NO_CONTENT: 'No content found in the PDF (blank pages?).',
   errDownloadMissing: 'Downloaded file not found.',
+  errDownloadFailed: 'Chrome could not download the PDF from this link.',
   errHostNeededRead: 'Reading downloaded files requires the print helper (see Settings).',
   errTabUnreadable: 'This tab cannot be read (not an http/https/file address). Download the PDF and use “Recently downloaded”.',
   errHttp: 'Could not download the PDF (HTTP {status}).',
@@ -227,6 +228,7 @@ const pl = {
 
   NO_CONTENT: 'Nie znaleziono żadnej treści w pliku PDF (puste strony?).',
   errDownloadMissing: 'Nie znaleziono pobranego pliku.',
+  errDownloadFailed: 'Chrome nie mógł pobrać PDF-a z tego linku.',
   errHostNeededRead: 'Do odczytu pobranych plików potrzebny jest natywny host (zobacz ustawienia).',
   errTabUnreadable: 'Tej karty nie da się odczytać (to nie jest adres http/https/plik). Pobierz PDF i użyj listy „Ostatnio pobrane”.',
   errHttp: 'Nie udało się pobrać PDF (HTTP {status}).',
