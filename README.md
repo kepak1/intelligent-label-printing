@@ -12,6 +12,8 @@ A Chrome extension that prints courier labels in one click. The label in the PDF
 | **A4** | the label in an A6 area (105×148 mm) in the chosen corner of the sheet, with cut lines; optionally 2 or 4 labels per sheet |
 | **A6 / 100×150 / 4×6" / custom** | the label scaled and rotated to fill the whole page |
 
+**Free and open source, forever.** No subscription, no trial, no account, no paid tier: every feature is free for everyone. Labels are processed only on your computer and never uploaded anywhere (see the [privacy policy](PRIVACY.md)).
+
 The interface is in English by default. Polish is available: switch it in the popup (EN/PL) or under **Settings → Language**.
 
 ## Installation
@@ -106,6 +108,7 @@ helper/           Native Messaging helper in Go (one binary, no dependencies)
   print_windows.go  Windows printing (winspool + GDI)
   install_*.go    self-registration with the browsers
   build.sh        builds everything into dist/
+store/            Chrome Web Store listing texts (EN/PL) and permission justifications
 keys/             the extension's private key – keep it safe, never publish it
 test-pdfs/        sample labels for testing
 ```
