@@ -11,6 +11,9 @@ export const LINKS = {
   donatePl: '', // optional separate page for the Polish UI, e.g. buycoffee.to
 };
 
+// The extension ID the helper allows by default (derived from "key" in manifest.json).
+export const EXPECTED_EXTENSION_ID = 'fcfpnegfonhlplflgmjapjgkdcpdfkma';
+
 // Oldest helper version this extension works with.
 export const MIN_HELPER_VERSION = '2.0.0';
 

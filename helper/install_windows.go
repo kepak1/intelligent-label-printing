@@ -39,26 +39,59 @@ func rootKey(system bool) registry.Key {
 	return registry.CURRENT_USER
 }
 
-func install(system bool) (string, error) {
-	dir := installDir(system)
+func install(o options) (string, error) {
+	dir := installDir(o.system)
 	exe := filepath.Join(dir, "ilp-host.exe")
+	manifest := filepath.Join(dir, HostName+".json")
+	wasInstalled := false
+	if _, err := os.Stat(manifest); err == nil {
+		wasInstalled = true
+	}
 	if err := copySelf(exe); err != nil {
 		return "", err
 	}
 	os.Remove(exe + ".old")
-	manifest := filepath.Join(dir, HostName+".json")
-	if err := os.WriteFile(manifest, manifestJSON(exe), 0o644); err != nil {
+	origins := mergeOrigins([]string{manifest}, o.extra)
+	if err := os.WriteFile(manifest, manifestJSON(exe, origins), 0o644); err != nil {
 		return "", err
 	}
 	for _, base := range registryBases {
-		k, _, err := registry.CreateKey(rootKey(system), base+`\`+HostName, registry.SET_VALUE)
+		k, _, err := registry.CreateKey(rootKey(o.system), base+`\`+HostName, registry.SET_VALUE)
 		if err != nil {
 			return "", fmt.Errorf("registry %s: %v", base, err)
 		}
-		k.SetStringValue("", manifest)
+		err = k.SetStringValue("", manifest)
 		k.Close()
+		if err != nil {
+			return "", fmt.Errorf("registry %s: %v", base, err)
+		}
 	}
-	return fmt.Sprintf("Intelligent label printing helper %s is installed.\n\nYou can now print labels from the Chrome extension.\n(Restart Chrome if it was open.)\n\n%s", Version, exe), nil
+	head := "is installed"
+	if wasInstalled {
+		head = "was updated"
+	}
+	st, _ := status(o.system)
+	return fmt.Sprintf("Intelligent label printing helper %s %s.\n\nYou can now print labels from the Chrome extension.\n(Restart Chrome if it was open.)\n\n%s", Version, head, st), nil
+}
+
+func status(system bool) (string, error) {
+	lines := []string{"Registration:"}
+	for _, base := range registryBases {
+		browser := strings.Split(base, `\`)[1] + " " + strings.Split(base, `\`)[2]
+		k, err := registry.OpenKey(rootKey(system), base+`\`+HostName, registry.QUERY_VALUE)
+		if err != nil {
+			lines = append(lines, fmt.Sprintf("  %s: not registered", browser))
+			continue
+		}
+		v, _, err := k.GetStringValue("")
+		k.Close()
+		if err != nil {
+			v = "(no value)"
+		}
+		lines = append(lines, fmt.Sprintf("  %s: %s", browser, v))
+	}
+	lines = append(lines, "Manifest:", describeManifest(filepath.Join(installDir(system), HostName+".json")))
+	return strings.Join(lines, "\n"), nil
 }
 
 func uninstall(system bool) (string, error) {

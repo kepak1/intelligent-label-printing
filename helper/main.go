@@ -14,12 +14,13 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"strings"
 )
 
 const (
-	Version  = "2.0.0"
+	Version  = "2.0.1"
 	HostName = "com.intelligent_label_printing.host"
 	maxChunk = 600 * 1024 // file bytes per message (helper -> Chrome is limited to 1 MB)
 )
@@ -165,11 +166,42 @@ func serve() {
 func usage() {
 	fmt.Printf(`Intelligent label printing helper %s
 
-  ilp-host install [--system]   register the helper with Chrome, Edge, Brave and Chromium
+  ilp-host install [--system] [--extension-id ID]
+                                register the helper with Chrome, Edge, Brave and Chromium;
+                                --extension-id also allows an extension with another ID
+                                (e.g. one loaded unpacked); it can be repeated
   ilp-host uninstall [--system] remove the registration
+  ilp-host status [--system]    show where the helper is registered
   ilp-host printers             list printers and paper sizes (for testing)
   ilp-host version
 `, Version)
+}
+
+var reExtensionID = regexp.MustCompile(`^[a-p]{32}$`)
+
+type options struct {
+	system bool
+	extra  []string // extra allowed origins
+}
+
+func parseOptions(args []string) (options, error) {
+	var o options
+	for i := 0; i < len(args); i++ {
+		switch a := args[i]; {
+		case a == "--system":
+			o.system = true
+		case a == "--extension-id" && i+1 < len(args):
+			i++
+			id := strings.TrimSuffix(strings.TrimPrefix(strings.TrimSpace(args[i]), "chrome-extension://"), "/")
+			if !reExtensionID.MatchString(id) {
+				return o, fmt.Errorf("%q is not a valid extension ID (32 letters a-p)", args[i])
+			}
+			o.extra = append(o.extra, "chrome-extension://"+id+"/")
+		default:
+			return o, fmt.Errorf("unknown option %q", a)
+		}
+	}
+	return o, nil
 }
 
 func main() {
@@ -179,10 +211,14 @@ func main() {
 		serve()
 		return
 	}
-	system := len(args) > 1 && args[1] == "--system"
 	cmd := ""
 	if len(args) > 0 {
-		cmd = args[0]
+		cmd, args = args[0], args[1:]
+	}
+	opts, err := parseOptions(args)
+	if err != nil {
+		report("", err)
+		return
 	}
 	switch cmd {
 	case "", "install":
@@ -190,9 +226,11 @@ func main() {
 			usage()
 			return
 		}
-		report(install(system))
+		report(install(opts))
 	case "uninstall":
-		report(uninstall(system))
+		report(uninstall(opts.system))
+	case "status":
+		report(status(opts.system))
 	case "printers":
 		p, err := listPrinters()
 		if err != nil {

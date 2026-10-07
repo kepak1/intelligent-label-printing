@@ -1,6 +1,6 @@
 import { loadSettings, saveSettings, newProfile, PAPER_PRESETS, paperSize, profileSummary, isSheetMode } from './settings.js';
 import { LANGUAGES, makeT, applyI18n } from './i18n.js';
-import { LINKS, MIN_HELPER_VERSION, donateUrl, helperConfigured, versionLess } from './config.js';
+import { LINKS, MIN_HELPER_VERSION, EXPECTED_EXTENSION_ID, donateUrl, helperConfigured, versionLess } from './config.js';
 
 const $ = (id) => document.getElementById(id);
 let settings;
@@ -465,7 +465,31 @@ function renderHostStatus() {
     : outdated ? t('hostOutdated', { version: hostInfo.version, min: MIN_HELPER_VERSION })
       : t('hostConnected', hostInfo));
   el.title = hostInfo.ok ? '' : hostInfo.error || '';
+  renderHostProblem();
   renderHelperInstall(!hostInfo.ok || outdated);
+}
+
+// Explains why Chrome could not reach the helper, based on its error message.
+function renderHostProblem() {
+  const box = $('hostProblem');
+  const err = hostInfo && !hostInfo.ok ? String(hostInfo.error || '') : '';
+  const mismatch = chrome.runtime.id !== EXPECTED_EXTENSION_ID;
+  box.hidden = !err;
+  if (!err) return;
+  let hint = '';
+  if (/forbidden/i.test(err)) hint = t('hostHintForbidden');
+  else if (/not found/i.test(err)) hint = t('hostHintNotFound');
+  else if (/exited|failed to start|communicating/i.test(err)) hint = t('hostHintCrashed');
+  $('hostProblemText').textContent = hint;
+  $('hostErrorDetail').textContent = t('hostErrorDetail', { error: err });
+  $('idMismatch').hidden = !mismatch;
+  if (mismatch) {
+    const id = chrome.runtime.id;
+    $('idMismatchText').textContent = t('idMismatch', { id, expected: EXPECTED_EXTENSION_ID });
+    $('idMismatchCmd').textContent = detectOS() === 'windows'
+      ? `& "$env:LOCALAPPDATA\\IntelligentLabelPrinting\\ilp-host.exe" install --extension-id ${id}` // PowerShell
+      : `sudo "/Library/Application Support/IntelligentLabelPrinting/ilp-host" install --system --extension-id ${id}`;
+  }
 }
 
 async function loadPrinters() {

@@ -171,6 +171,11 @@
   <section class="panel">
     <h2 data-i18n="hostSection"></h2>
     <p id="hostStatus"><span class="dot"></span></p>
+    <div class="warn" id="hostProblem" hidden>
+      <div id="hostProblemText"></div>
+      <div id="idMismatch" hidden><p id="idMismatchText" style="margin:8px 0 6px"></p><pre id="idMismatchCmd" style="margin:0;white-space:pre-wrap;word-break:break-all"></pre></div>
+      <p class="muted" id="hostErrorDetail" style="margin:8px 0 0"></p>
+    </div>
     <p class="muted" data-i18n-html="hostExplain"></p>
     <div id="helperInstall" hidden>
       <div class="bar" id="helperButtons" style="margin-top:0"></div>

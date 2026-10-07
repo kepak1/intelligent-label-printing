@@ -61,13 +61,13 @@ func manifestDirs(system bool) (dirs []string, always string) {
 	}, chrome
 }
 
-func install(system bool) (string, error) {
+func install(o options) (string, error) {
 	exe, err := os.Executable()
 	if err != nil {
 		return "", err
 	}
 	exe, _ = filepath.EvalSymlinks(exe)
-	if !system {
+	if !o.system {
 		// per-user install: keep a copy of the helper in the user's app folder
 		target := filepath.Join(userAppDir(), "ilp-host")
 		if err := copySelf(target); err != nil {
@@ -75,21 +75,42 @@ func install(system bool) (string, error) {
 		}
 		exe = target
 	}
-	dirs, always := manifestDirs(system)
+	dirs, always := manifestDirs(o.system)
+	var existing []string
+	for _, d := range dirs {
+		existing = append(existing, filepath.Join(d, HostName+".json"))
+	}
+	origins := mergeOrigins(existing, o.extra)
 	var done []string
 	for _, d := range dirs {
 		// write only for installed browsers (their profile root exists), Chrome always
-		if d != always && !system {
+		if d != always && !o.system {
 			if _, err := os.Stat(filepath.Dir(d)); err != nil {
 				continue
 			}
 		}
-		if err := writeManifest(d, exe); err != nil {
+		if err := writeManifest(d, exe, origins); err != nil {
 			return "", fmt.Errorf("%s: %v", d, err)
 		}
 		done = append(done, d)
 	}
-	return fmt.Sprintf("Intelligent label printing helper %s installed.\nHelper: %s\nRegistered in:\n  %s", Version, exe, strings.Join(done, "\n  ")), nil
+	return fmt.Sprintf("Intelligent label printing helper %s installed.\nHelper: %s\nAllowed extensions: %s\nRegistered in:\n  %s",
+		Version, exe, strings.Join(origins, ", "), strings.Join(done, "\n  ")), nil
+}
+
+func status(system bool) (string, error) {
+	dirs, _ := manifestDirs(system)
+	lines := []string{fmt.Sprintf("Intelligent label printing helper %s", Version)}
+	for _, d := range dirs {
+		f := filepath.Join(d, HostName+".json")
+		if _, err := os.Stat(f); err == nil {
+			lines = append(lines, describeManifest(f))
+		}
+	}
+	if len(lines) == 1 {
+		lines = append(lines, "  not registered with any browser")
+	}
+	return strings.Join(lines, "\n"), nil
 }
 
 func uninstall(system bool) (string, error) {

@@ -5,7 +5,8 @@
 #   dist/LabelPrintingHelper-Windows-arm64.exe
 #   dist/LabelPrintingHelper-Linux-x64          Linux helper – run "install"
 #   dist/ilp-host-macos                         plain macOS binary (developer install)
-#   dist/extension-webstore.zip                 extension for the Chrome Web Store
+#   dist/extension-unpacked.zip                 extension for "Load unpacked" (ID matches the helper)
+#   dist/extension-chrome-web-store.zip         extension for the Chrome Web Store
 set -euo pipefail
 cd "$(dirname "$0")"
 ROOT="$(cd .. && pwd)"
@@ -39,8 +40,13 @@ GOOS=windows GOARCH=amd64 go build -trimpath -ldflags "$LDFLAGS" -o "$DIST/Label
 GOOS=windows GOARCH=arm64 go build -trimpath -ldflags "$LDFLAGS" -o "$DIST/LabelPrintingHelper-Windows-arm64.exe" .
 GOOS=linux GOARCH=amd64 go build -trimpath -ldflags "$LDFLAGS" -o "$DIST/LabelPrintingHelper-Linux-x64" .
 
-# Chrome Web Store package: the store does not accept the "key" field; to keep the
-# extension ID on the FIRST upload, the private key is included as key.pem.
+# Extension packages.
+#  - extension-unpacked.zip: for "Load unpacked"; keeps the "key" so the ID matches the helper.
+#  - extension-chrome-web-store.zip: the store does not accept the "key" field.
+#  - extension-webstore-first-upload.zip: store package + key.pem - the FIRST upload
+#    with it keeps the same extension ID. Never publish this file.
+rm -f "$DIST"/extension-*.zip
+(cd "$ROOT/extension" && zip -qr -X "$DIST/extension-unpacked.zip" . -x '.*')
 STAGE=$(mktemp -d)
 cp -R "$ROOT/extension/." "$STAGE/"
 python3 - "$STAGE/manifest.json" <<'PY'
@@ -48,11 +54,9 @@ import json, sys
 p = sys.argv[1]; m = json.load(open(p)); m.pop("key", None)
 json.dump(m, open(p, "w"), indent=2, ensure_ascii=False)
 PY
-rm -f "$DIST/extension-webstore.zip"
-(cd "$STAGE" && zip -qr -X "$DIST/extension-webstore.zip" . -x '.*')
+(cd "$STAGE" && zip -qr -X "$DIST/extension-chrome-web-store.zip" . -x '.*')
 if [ -f "$ROOT/keys/extension-key.pem" ]; then
   cp "$ROOT/keys/extension-key.pem" "$STAGE/key.pem"
-  rm -f "$DIST/extension-webstore-first-upload.zip"
   (cd "$STAGE" && zip -qr -X "$DIST/extension-webstore-first-upload.zip" . -x '.*')
 fi
 rm -rf "$STAGE"

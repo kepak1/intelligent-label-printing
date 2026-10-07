@@ -40,7 +40,7 @@ bash ~/Labelprinter/helper/build.sh
 
 ### 2. The extension
 1. Open `chrome://extensions` and turn on **Developer mode**.
-2. Click **Load unpacked** and select the `~/Labelprinter/extension` folder.
+2. Click **Load unpacked** and select the `extension` folder of the project, or the unzipped `extension-unpacked.zip` from the release. Don't use the Chrome Web Store zip: it gets a different ID.
 3. The extension has the fixed ID `fcfpnegfonhlplflgmjapjgkdcpdfkma`, which matches the installed helper.
 4. Pin the icon to the toolbar.
 
@@ -85,7 +85,11 @@ Printer names are matched ignoring punctuation, so `Brother_QL_1110NWB` (macOS) 
 - **The printer blinks red and does not print.** The media size in the job does not match the loaded roll. Select the custom size you normally use in the macOS print dialog (marked ★).
 - **The label comes out in several pieces, or rotated and enlarged.** The driver media does not match the paper in the profile. Open the profile settings and follow the warning.
 - **The edges are clipped.** Increase *Margin inside the label area*, or set *Printer-side scaling* to *Fit to page*.
-- **"No print helper".** Install the helper (see above), restart Chrome and click **Check again** in the settings.
+- **"No print helper".** The settings page shows Chrome's exact error and a hint:
+  - *not found*: the helper isn't registered. Run the installer again and close Chrome completely before reopening it.
+  - *forbidden*: the extension has a different ID than the helper expects. Load `extension-unpacked.zip`, or allow the ID with the command shown on the page (`ilp-host install --extension-id <ID>`).
+  - *exited / failed to start*: the helper was blocked or crashed. Check your antivirus.
+- **Check the helper registration**: on Windows, double-click the helper again, or run `ilp-host status` (macOS: `"/Library/Application Support/IntelligentLabelPrinting/ilp-host" status --system`).
 - **Windows: wrong size or blank page.** Choose the matching paper in *Media size in the driver*. Many label printer drivers on Windows only accept their own paper sizes or a form created in *Print server properties*.
 
 ## Project structure
@@ -122,14 +126,15 @@ The build writes these files to `dist/`:
 | `LabelPrintingHelper-macOS.pkg` | macOS installer (Intel + Apple Silicon) |
 | `LabelPrintingHelper-Windows-x64.exe` | Windows helper |
 | `LabelPrintingHelper-Windows-arm64.exe` | Windows helper for ARM |
-| `extension-webstore.zip` | package for Chrome Web Store updates |
+| `extension-unpacked.zip` | the extension for **Load unpacked**. It keeps the extension ID the helper expects. |
+| `extension-chrome-web-store.zip` | package for Chrome Web Store updates. Don't load it unpacked: without the key, Chrome gives it a different ID and the helper refuses it. |
 | `extension-webstore-first-upload.zip` | package for the **first** Web Store upload. It contains `key.pem`, so the store keeps the same extension ID the helper expects. Never share it. |
 
 Release checklist:
 1. Bump `Version` in `helper/main.go`, `MIN_HELPER_VERSION` in `extension/config.js` (if the extension needs the new helper), and `version` in `extension/manifest.json`.
 2. Run `helper/build.sh`.
 3. Upload the installers to a GitHub release. The download buttons in the settings point to `releases/latest/download/<file name>`, which is set in `extension/config.js`.
-4. Upload `extension-webstore.zip` to the Chrome Web Store.
+4. Upload `extension-chrome-web-store.zip` to the Chrome Web Store.
 
 ## Donations
 The **☕ Support the project** button in the settings opens the page set in `extension/config.js`:
