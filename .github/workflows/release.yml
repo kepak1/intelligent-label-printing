@@ -32,7 +32,6 @@ jobs:
             dist/LabelPrintingHelper-Windows-arm64.exe
             dist/LabelPrintingHelper-Linux-x64
             dist/extension-unpacked.zip
-            dist/extension-chrome-web-store.zip
       - name: Keep build artifacts
         if: ${{ !startsWith(github.ref, 'refs/tags/') }}
         uses: actions/upload-artifact@v5

@@ -127,7 +127,7 @@ The build writes these files to `dist/`:
 | `LabelPrintingHelper-Windows-x64.exe` | Windows helper |
 | `LabelPrintingHelper-Windows-arm64.exe` | Windows helper for ARM |
 | `extension-unpacked.zip` | the extension for **Load unpacked**. It keeps the extension ID the helper expects. |
-| `extension-chrome-web-store.zip` | package for Chrome Web Store updates. Don't load it unpacked: without the key, Chrome gives it a different ID and the helper refuses it. |
+| `extension-chrome-web-store.zip` | package for Chrome Web Store updates. It is built locally and not attached to GitHub releases. Don't load it unpacked: without the key, Chrome gives it a different ID and the helper refuses it. |
 | `extension-webstore-first-upload.zip` | package for the **first** Web Store upload. It contains `key.pem`, so the store keeps the same extension ID the helper expects. Never share it. |
 
 Release checklist:
