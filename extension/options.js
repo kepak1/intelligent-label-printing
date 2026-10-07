@@ -53,22 +53,30 @@ function paperForMedia(m) {
   return { paper: 'custom', paperW: m.w, paperH: m.h };
 }
 
-function sameSize(m, p) {
-  const s = paperSize(p);
-  return Math.abs(m.w - s.w) <= 1.5 && Math.abs(m.h - s.h) <= 1.5;
-}
-
 const isContinuous = (m) => /^\d+(\.\d+)?\s*mm(\s*x\d)?$/i.test(m.name || '');
 
-// Keep each profile's non-printable edges in sync with its media (driver data).
-function syncUnprintable() {
+// Paper settings the profile gets from its media, or null when the paper has
+// to be entered by hand (no printer, unknown size, or "custom size" media).
+function derivedPaper(p) {
+  if (p.media === FROM_PAPER) return null;
+  const m = effectiveMedia(p);
+  return m?.w && m?.h ? paperForMedia(m) : null;
+}
+
+// Keeps each profile's paper and non-printable edges in sync with its media
+// (e.g. after importing settings or changing the driver's default paper).
+function syncFromMedia() {
   let changed = false;
   for (const p of settings.profiles) {
+    const d = derivedPaper(p);
+    if (d && (d.paper !== p.paper || d.paperW !== p.paperW || d.paperH !== p.paperH)) {
+      Object.assign(p, d);
+      if (isSheetMode(p)) p.printerScaling = 'none';
+      changed = true;
+    }
     const m = p.media === FROM_PAPER ? null : effectiveMedia(p);
-    if (!m?.margins) continue; // Windows: margins come from printerInfo instead
-    const u = m.margins || ZERO;
-    if (JSON.stringify(u) !== JSON.stringify(p.unprintable)) {
-      p.unprintable = { ...u };
+    if (m?.margins && JSON.stringify(m.margins) !== JSON.stringify(p.unprintable)) {
+      p.unprintable = { ...m.margins }; // Windows: margins come from printerInfo instead
       changed = true;
     }
   }
@@ -135,20 +143,28 @@ function fillPrinterSelects(p) {
   media.value = p.media;
 }
 
-function renderMediaWarning(p) {
-  const m = effectiveMedia(p);
-  const show = !!(m && m.w && !sameSize(m, p));
-  $('mediaWarn').hidden = !show;
-  if (show) {
-    const s = paperSize(p);
-    let text = t('mediaMismatch', { media: m.name || m.code, mw: m.w, mh: m.h, pw: s.w, ph: s.h });
-    if (isContinuous(m)) text += ' ' + t('continuousHint', { mw: m.w, mh: m.h });
-    $('mediaWarnText').textContent = text;
-  }
+function renderMediaHint(p) {
+  const m = p.media === FROM_PAPER ? null : effectiveMedia(p);
+  const continuous = !!(m?.w && isContinuous(m));
+  $('mediaHint').hidden = !continuous;
+  if (continuous) $('mediaHint').textContent = t('continuousHint', { mw: m.w, mh: m.h });
   const u = p.unprintable || ZERO;
   const any = ['l', 't', 'r', 'b'].some((k) => +u[k] > 0);
   $('unprintableHint').hidden = !any;
   if (any) $('unprintableHint').textContent = t('unprintable', u);
+}
+
+function renderPaper(p) {
+  const derived = derivedPaper(p);
+  $('paperManual').hidden = !!derived;
+  $('paperDerived').hidden = !derived;
+  if (derived) {
+    const s = paperSize(p);
+    $('paperDerived').textContent = t(isSheetMode(p) ? 'paperFromMediaSheet' : 'paperFromMedia', { w: s.w, h: s.h });
+  }
+  const hint = p.media === FROM_PAPER ? t('paperCustomHint') : p.printer && printerOf(p) ? t('paperManualHint') : '';
+  $('paperManualHint').hidden = !!derived || !hint;
+  $('paperManualHint').textContent = hint;
 }
 
 function renderEditor() {
@@ -167,7 +183,8 @@ function renderEditor() {
   for (const b of $('positions').querySelectorAll('button')) b.classList.toggle('sel', b.dataset.pos === p.position);
   $('makeActive').disabled = p.id === settings.activeProfileId;
   $('remove').disabled = settings.profiles.length < 2;
-  renderMediaWarning(p);
+  renderMediaHint(p);
+  renderPaper(p);
 }
 
 function renderAll() {
@@ -191,11 +208,6 @@ function applyLanguage() {
 
 // ---------- events ----------
 
-function applyMedia(p, m) {
-  Object.assign(p, paperForMedia(m));
-  p.unprintable = { ...(m.margins || ZERO) };
-}
-
 function bindEditor() {
   $('editor').addEventListener('change', (e) => {
     const el = e.target.closest('[data-k]');
@@ -211,14 +223,10 @@ function bindEditor() {
       const pr = printerOf(p);
       p.media = pr?.media.some((m) => m.code === pr.lastUsedMedia) ? pr.lastUsedMedia : '';
       const m = effectiveMedia(p);
-      if (p.media && m?.w) applyMedia(p, m);
-      else p.unprintable = { ...(m?.margins || ZERO) };
+      p.unprintable = { ...(m?.margins || ZERO) };
     }
-    if (k === 'media') {
-      const m = effectiveMedia(p);
-      if (p.media === FROM_PAPER) p.unprintable = { ...ZERO };
-      else if (m?.w) applyMedia(p, m);
-    }
+    if (k === 'media' && p.media === FROM_PAPER) p.unprintable = { ...ZERO };
+    if (k === 'printer' || k === 'media') syncFromMedia();
     if (k === 'paper') {
       if (isSheetMode(p)) p.printerScaling = 'none';
       if (p.paper !== 'custom') Object.assign(p, { paperW: PAPER_PRESETS[p.paper].w, paperH: PAPER_PRESETS[p.paper].h });
@@ -237,13 +245,6 @@ function bindEditor() {
       renderList();
     }
   });
-  $('useMedia').onclick = () => {
-    const m = effectiveMedia(current());
-    if (!m) return;
-    applyMedia(current(), m);
-    save();
-    renderAll();
-  };
   $('positions').addEventListener('click', (e) => {
     const b = e.target.closest('button');
     if (!b) return;
@@ -369,7 +370,7 @@ async function finishImport(mode) {
   pendingImport = null;
   $('importBox').hidden = true;
   selectedId = settings.activeProfileId;
-  syncUnprintable();
+  syncFromMedia();
   await saveSettings(settings);
   refreshGlobal();
   applyLanguage();
@@ -500,7 +501,7 @@ async function loadPrinters() {
     printers = r?.ok ? r.printers : [];
   }
   renderHostStatus();
-  syncUnprintable();
+  syncFromMedia();
   renderAll();
 }
 

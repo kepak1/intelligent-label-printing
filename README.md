@@ -49,9 +49,9 @@ In the extension settings, assign a printer to each profile (the list comes from
 
 The extension reads every media size's real dimensions and non-printable edges from the printer driver:
 
-- Choosing a media size sets the matching paper automatically.
-- The non-printable edges are applied automatically, so nothing gets clipped.
-- If the driver media and the paper in the profile do not match, the settings page shows a warning with a **Use the media size** button.
+- **The paper size follows the media size.** It is shown as a read-only line (e.g. *Paper: 102 × 152 mm – taken from the media size above*), so the paper and the driver media can't get out of sync. A4 media switches to the cut-to-A6 layout.
+- **You set the paper by hand only when there is nothing to derive it from**: the profile has no printer, the media size is unknown, or you chose **Custom size = paper set below**, in which case that size is sent to the printer.
+- **The non-printable edges are applied automatically**, so nothing gets clipped.
 
 #### Custom paper sizes
 - **macOS custom sizes.** Sizes you created in the macOS print dialog (*Paper size → Manage Custom Sizes…*) appear at the top of the media list.
@@ -83,7 +83,7 @@ Printer names are matched ignoring punctuation, so `Brother_QL_1110NWB` (macOS) 
 
 ## Troubleshooting
 - **The printer blinks red and does not print.** The media size in the job does not match the loaded roll. Select the custom size you normally use in the macOS print dialog (marked ★).
-- **The label comes out in several pieces, or rotated and enlarged.** The driver media does not match the paper in the profile. Open the profile settings and follow the warning.
+- **The label comes out in several pieces, or rotated and enlarged.** The selected media doesn't match the labels loaded in the printer, e.g. continuous tape instead of die-cut labels. Choose the media that matches your roll. The settings page warns when the media is continuous tape.
 - **The edges are clipped.** Increase *Margin inside the label area*, or set *Printer-side scaling* to *Fit to page*.
 - **"No print helper".** The settings page shows Chrome's exact error and a hint:
   - *not found*: the helper isn't registered. Run the installer again and close Chrome completely before reopening it.

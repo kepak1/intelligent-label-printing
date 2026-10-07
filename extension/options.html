@@ -37,7 +37,8 @@
   .positions { display: grid; grid-template-columns: repeat(2, 56px); gap: 4px; }
   .positions button { height: 70px; padding: 0; font-size: 11px; color: var(--muted); }
   .positions button.sel { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
-  .sheetonly[hidden], .customonly[hidden] { display: none; }
+  .sheetonly[hidden], .customonly[hidden], #paperManual[hidden], .paperline[hidden] { display: none; }
+  .paperline { margin: 0 0 12px; padding: 9px 12px; border-radius: 8px; background: var(--accent-soft); }
   header .grow { flex: 1; }
   header label { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 12px; }
   header select { width: auto; }
@@ -82,15 +83,19 @@
               <option value="fit" data-i18n="scalingFit"></option>
             </select></label>
         </div>
-        <div class="warn" id="mediaWarn" hidden><span id="mediaWarnText"></span><br><button class="small" id="useMedia" data-i18n="mediaMismatchFix"></button></div>
+        <p class="hint" id="mediaHint" hidden></p>
         <label class="field" style="max-width:140px"><span data-i18n="copies"></span><input type="number" min="1" max="20" data-k="copies"></label>
       </fieldset>
 
       <fieldset><legend data-i18n="paperSection"></legend>
-        <label class="field"><span data-i18n="loadedPaper"></span><select data-k="paper" id="paper"></select></label>
-        <div class="row customonly" id="customRow">
-          <label class="field"><span data-i18n="widthMm"></span><input type="number" step="0.1" data-k="paperW"></label>
-          <label class="field"><span data-i18n="heightMm"></span><input type="number" step="0.1" data-k="paperH"></label>
+        <p class="paperline" id="paperDerived" hidden></p>
+        <div id="paperManual">
+          <label class="field"><span data-i18n="loadedPaper"></span><select data-k="paper" id="paper"></select></label>
+          <div class="row customonly" id="customRow">
+            <label class="field"><span data-i18n="widthMm"></span><input type="number" step="0.1" data-k="paperW"></label>
+            <label class="field"><span data-i18n="heightMm"></span><input type="number" step="0.1" data-k="paperH"></label>
+          </div>
+          <p class="hint" id="paperManualHint" hidden></p>
         </div>
         <div class="sheetonly" id="sheetOpts">
           <p class="hint" data-i18n="sheetHint"></p>
