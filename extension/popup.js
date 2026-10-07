@@ -74,7 +74,7 @@ async function renderDownloads() {
     const row = document.createElement('div');
     row.className = 'dl';
     row.innerHTML = '<span class="name"><span></span><small></small></span><button class="small primary"></button><button class="small"></button>';
-    row.querySelector('.name span').textContent = d.filename.split('/').pop();
+    row.querySelector('.name span').textContent = d.filename.split(/[\\/]/).pop();
     row.querySelector('.name').title = d.filename;
     row.querySelector('small').textContent = timeAgo(d.startTime);
     const [pr, pv] = row.querySelectorAll('button');

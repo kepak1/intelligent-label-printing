@@ -47,17 +47,26 @@ function nameFromUrl(url) {
   } catch { return 'label.pdf'; }
 }
 
+// file:///Users/x/a.pdf -> /Users/x/a.pdf, file:///C:/Users/x/a.pdf -> C:/Users/x/a.pdf,
+// file://server/share/a.pdf -> //server/share/a.pdf (Windows network share)
+function fileUrlToPath(url) {
+  const u = new URL(url);
+  const path = decodeURIComponent(u.pathname);
+  if (u.hostname) return `//${u.hostname}${path}`;
+  return /^\/[A-Za-z]:\//.test(path) ? path.slice(1) : path;
+}
+
 async function getBytes(source) {
   if (source.kind === 'bytes') return { bytes: b64ToBytes(source.b64), name: source.name || 'label.pdf' };
   if (source.kind === 'download') {
     const [item] = await chrome.downloads.search({ id: source.id });
     if (!item) throw new I18nError('errDownloadMissing');
-    return { bytes: await readViaHost(item.filename), name: item.filename.split('/').pop() };
+    return { bytes: await readViaHost(item.filename), name: item.filename.split(/[\\/]/).pop() };
   }
   if (source.kind === 'url') {
     const url = source.url || '';
     if (url.startsWith('file://')) {
-      return { bytes: await readViaHost(decodeURIComponent(new URL(url).pathname)), name: nameFromUrl(url) };
+      return { bytes: await readViaHost(fileUrlToPath(url)), name: nameFromUrl(url) };
     }
     if (!/^https?:/.test(url)) throw new I18nError('errTabUnreadable');
     const res = await fetch(url, { credentials: 'include' });

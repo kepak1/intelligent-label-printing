@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	Version  = "2.0.1"
+	Version  = "2.0.2"
 	HostName = "com.intelligent_label_printing.host"
 	maxChunk = 600 * 1024 // file bytes per message (helper -> Chrome is limited to 1 MB)
 )
@@ -105,6 +105,10 @@ func handle(req *Request) Response {
 
 func readFile(req *Request) Response {
 	path := req.Path
+	// "/C:/Users/…" (from a file:// URL) is not a valid Windows path
+	if runtime.GOOS == "windows" && len(path) > 3 && path[0] == '/' && path[2] == ':' {
+		path = path[1:]
+	}
 	if strings.HasPrefix(path, "~") {
 		home, _ := os.UserHomeDir()
 		path = filepath.Join(home, path[1:])
