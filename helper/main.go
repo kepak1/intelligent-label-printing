@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	Version  = "2.0.5"
+	Version  = "2.0.6"
 	HostName = "com.intelligent_label_printing.host"
 	maxChunk = 600 * 1024 // file bytes per message (helper -> Chrome is limited to 1 MB)
 )

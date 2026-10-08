@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "__MSG_extName__",
   "short_name": "Label printing",
-  "version": "2.0.5",
+  "version": "2.0.6",
   "description": "__MSG_extDescription__",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA977CNO+GspeYXoBTqRjC6omtF8dHVPAzoHpX9ysGBQ9RnvvTB9zZ0pAvkZDFur1pxPmKBj+IfxF6UuzhbbakBWHGEkT3u/3l9C5ZAwsR75GE9XL02V696oEEo5tXAH7pak4+Lmd66S+2bikKuNwXgUWjGnmPClYkO78zl6sckV43bN+wa8nDnGyomHxWVAoFPop+eLq62e9a4oF3T90TXHowDK/ENryNekos/YD+ptZSVU8LtSorBobVmcioLLdf/mMUCeUkWiZAPbv7luZ1dwP0HHwDq94XaS4ZNDs85Hi+7Z5LSY46SQs2pLi78yv8al2mIA5hHOdAJw8gU5WK6wIDAQAB",
   "minimum_chrome_version": "120",

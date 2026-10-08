@@ -3,7 +3,7 @@
     "message": "Intelligent label printing"
   },
   "extDescription": {
-    "message": "Darmowe drukowanie etykiet kurierskich: przycina PDF-y A4/A6 i drukuje je jednym kliknięciem na drukarce etykiet lub A4."
+    "message": "Drukowanie etykiet kurierskich: przycina PDF-y A4/A6 i drukuje je jednym kliknięciem na drukarce etykiet lub A4. Otwarty kod."
   },
   "cmdPrintCurrent": {
     "message": "Drukuj etykietę z bieżącej karty (aktywny profil)"

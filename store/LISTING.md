@@ -10,13 +10,13 @@ The short description comes from `extension/_locales/*/messages.json` (`extDescr
 ### Name
 Intelligent label printing
 
-### Short description (122 / 132)
-Free, open-source courier label printing: crops A4/A6 label PDFs and prints them on your label or A4 printer in one click.
+### Short description
+Open-source courier label printing: crops A4/A6 label PDFs and prints them on your label or A4 printer in one click.
 
 ### Detailed description
 
-**Print courier labels in one click – completely free, forever.**
-No subscription, no trial, no account, no "pro" plan. Intelligent label printing is free and open source, and it will stay that way.
+**Print courier labels in one click.**
+No subscription, no account, no paid version – every feature is available to everyone, and the code is open source.
 
 Some carriers give you the label as a full A6 page, others put it on a quarter of an A4 sheet. This extension handles both: it finds the label in the PDF, crops the white margins, and prints it the right way on the printer you choose.
 
@@ -25,7 +25,7 @@ Some carriers give you the label as a full A6 page, others put it on a quarter o
 • Skips instructions and small text next to the label automatically.
 • Splits several labels on one A4 page into separate labels.
 • Rotates and scales the label to fit your paper.
-• Prints directly to the selected printer – no print dialog (with the free helper app).
+• Prints directly to the selected printer – no print dialog (with the helper app).
 
 ★ WORKS WITH YOUR PRINTER
 • Label printers (Brother QL, Zebra, Munbyn, Xprinter and other thermal printers): the label fills the whole label – A6, 100×150 mm, 4×6" or any custom size.
@@ -46,12 +46,12 @@ Set up several printers as profiles (e.g. "Label printer" and "A4 office printer
 ★ PRIVATE BY DESIGN
 All processing happens on your computer. Your labels – with your customers' names and addresses – are never uploaded anywhere. No tracking, no analytics.
 
-★ ONE-CLICK PRINTING NEEDS A SMALL FREE HELPER
-Chrome does not let extensions print to a chosen printer without showing a dialog. A small, free, open-source helper app (macOS and Windows) does that part. The extension shows you where to download it and how to install it. Without the helper the extension still crops your labels and prints through the normal print dialog.
+★ ONE-CLICK PRINTING NEEDS A SMALL HELPER APP
+Chrome does not let extensions print to a chosen printer without showing a dialog. A small open-source helper app (macOS and Windows) does that part. The extension shows you where to download it and how to install it. Without the helper the extension still crops your labels and prints through the normal print dialog.
 
-★ FREE AND OPEN SOURCE
+★ OPEN SOURCE
 Source code: https://github.com/kepak1/intelligent-label-printing (MIT license).
-If the extension saves you time, you can support it on Ko-fi: https://ko-fi.com/kepak1 – donations pay for code signing, so the helper installs without security warnings. Donating is entirely optional and does not unlock anything; every feature is free for everyone.
+If the extension saves you time, you can support it on Ko-fi: https://ko-fi.com/kepak1 – donations pay for code signing, so the helper installs without security warnings. Donating is entirely optional and does not unlock anything – every feature is available to everyone.
 
 Interface languages: English, Polish.
 
@@ -65,13 +65,13 @@ Tools (alternative: Productivity → Workflow & Planning)
 ### Nazwa
 Intelligent label printing
 
-### Krótki opis (120 / 132)
-Darmowe drukowanie etykiet kurierskich: przycina PDF-y A4/A6 i drukuje je jednym kliknięciem na drukarce etykiet lub A4.
+### Krótki opis
+Drukowanie etykiet kurierskich: przycina PDF-y A4/A6 i drukuje je jednym kliknięciem na drukarce etykiet lub A4. Otwarty kod.
 
 ### Pełny opis
 
-**Drukuj etykiety kurierskie jednym kliknięciem – całkowicie za darmo, na zawsze.**
-Bez subskrypcji, bez okresu próbnego, bez zakładania konta, bez wersji „pro”. Intelligent label printing jest darmowa i ma otwarty kod źródłowy – i tak zostanie.
+**Drukuj etykiety kurierskie jednym kliknięciem.**
+Bez subskrypcji, bez zakładania konta, bez płatnej wersji – wszystkie funkcje są dostępne dla każdego, a kod jest otwarty.
 
 Jedni kurierzy dają etykietę jako całą stronę A6, inni umieszczają ją na ćwiartce kartki A4. Wtyczka radzi sobie z obydwoma przypadkami: znajduje etykietę w PDF-ie, obcina białe marginesy i drukuje ją poprawnie na wybranej drukarce.
 
@@ -80,7 +80,7 @@ Jedni kurierzy dają etykietę jako całą stronę A6, inni umieszczają ją na 
 • Automatycznie pomija instrukcje i drobny tekst obok etykiety.
 • Rozdziela kilka etykiet z jednej strony A4 na osobne wydruki.
 • Obraca i skaluje etykietę tak, by pasowała do papieru.
-• Drukuje od razu na wybranej drukarce – bez okna drukowania (z darmowym programem pomocniczym).
+• Drukuje od razu na wybranej drukarce – bez okna drukowania (z programem pomocniczym).
 
 ★ DZIAŁA Z TWOJĄ DRUKARKĄ
 • Drukarki etykiet (Brother QL, Zebra, Munbyn, Xprinter i inne termiczne): etykieta wypełnia całą naklejkę – A6, 100×150 mm, 4×6" albo dowolny własny rozmiar.
@@ -101,12 +101,12 @@ Ustaw kilka drukarek jako profile (np. „Drukarka etykiet” i „Drukarka A4 w
 ★ PRYWATNOŚĆ
 Wszystko dzieje się na Twoim komputerze. Etykiety – z imionami i adresami Twoich klientów – nigdy nie są nigdzie wysyłane. Bez śledzenia i bez statystyk.
 
-★ DRUK JEDNYM KLIKNIĘCIEM WYMAGA MAŁEGO, DARMOWEGO PROGRAMU
-Chrome nie pozwala wtyczkom drukować na wybraną drukarkę bez okna dialogowego. Robi to mały, darmowy program pomocniczy z otwartym kodem (macOS i Windows). Wtyczka pokaże, skąd go pobrać i jak zainstalować. Bez niego wtyczka nadal przycina etykiety i drukuje przez zwykłe okno drukowania.
+★ DRUK JEDNYM KLIKNIĘCIEM WYMAGA MAŁEGO PROGRAMU POMOCNICZEGO
+Chrome nie pozwala wtyczkom drukować na wybraną drukarkę bez okna dialogowego. Robi to mały program pomocniczy z otwartym kodem (macOS i Windows). Wtyczka pokaże, skąd go pobrać i jak zainstalować. Bez niego wtyczka nadal przycina etykiety i drukuje przez zwykłe okno drukowania.
 
-★ DARMOWA I OTWARTA
+★ OTWARTY KOD
 Kod źródłowy: https://github.com/kepak1/intelligent-label-printing (licencja MIT).
-Jeśli wtyczka oszczędza Ci czas, możesz ją wesprzeć na Ko-fi: https://ko-fi.com/kepak1 – wpłaty pokryją podpisywanie aplikacji, żeby program pomocniczy instalował się bez ostrzeżeń. Wsparcie jest całkowicie dobrowolne i niczego nie odblokowuje – wszystkie funkcje są darmowe dla wszystkich.
+Jeśli wtyczka oszczędza Ci czas, możesz ją wesprzeć na Ko-fi: https://ko-fi.com/kepak1 – wpłaty pokryją podpisywanie aplikacji, żeby program pomocniczy instalował się bez ostrzeżeń. Wsparcie jest całkowicie dobrowolne i niczego nie odblokowuje – wszystkie funkcje są dostępne dla każdego.
 
 Języki interfejsu: angielski, polski.
 

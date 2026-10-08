@@ -22,7 +22,7 @@
   .sub { font-size: 21px; line-height: 1.45; color: #4b5563; margin-top: 18px; }
   .badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
   .badge { display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid #dfe5f2; border-radius: 999px; padding: 9px 16px; font-size: 16px; font-weight: 600; color: #1f2a44; box-shadow: 0 1px 2px rgba(16,24,40,.05); }
-  .badge.free { background: #16a34a; border-color: #16a34a; color: #fff; }
+  .badge.hi { background: #2b59ff; border-color: #2b59ff; color: #fff; }
   .badge b { color: #16a34a; }
   .paper { background: #fff; box-shadow: 0 18px 40px rgba(17,24,39,.16), 0 2px 6px rgba(17,24,39,.08); border-radius: 4px; display: block; }
   .card { background: #fff; border-radius: 14px; box-shadow: 0 24px 60px rgba(17,24,39,.18), 0 2px 8px rgba(17,24,39,.08); overflow: hidden; }
@@ -30,7 +30,6 @@
   .arrow { position: absolute; font-size: 64px; color: #2b59ff; font-weight: 300; }
   iframe { border: 0; display: block; background: #fff; }
   .left { position: absolute; left: 72px; top: 64px; width: 470px; }
-  .free-strip { position: absolute; left: 72px; bottom: 56px; font-size: 16px; color: #16a34a; font-weight: 650; }
 </style>
 </head>
 <body>
@@ -48,7 +47,7 @@ const T = {
     brand: 'Intelligent label printing',
     h1: 'Print courier labels in <em>one click</em>',
     sub1: 'Crops A4 and A6 label PDFs to the label itself and prints it on your label printer or a plain A4 printer.',
-    free: '100% free – forever', noacc: 'No account, no subscription', open: 'Open source', priv: 'Labels never leave your computer',
+    open: 'Open source (MIT)', noacc: 'No account needed', os: 'macOS & Windows', priv: 'Labels never leave your computer',
     before: 'Your PDF (A4)', after: 'Printed label',
     h2: 'Pick a printer profile. <em>Print.</em>',
     sub2: 'Print the PDF in the current tab, a right-clicked link or a recent download – straight to the printer, no print dialog.',
@@ -60,14 +59,14 @@ const T = {
     sub5: 'The label is printed in an exact A6 area with cut lines – one per sheet or four at a time.',
     one: '1 label per sheet', four: '4 labels per sheet',
     promoSub: 'Crop & print courier labels in one click',
-    promoFree: 'FREE · OPEN SOURCE',
+    promoTag: 'OPEN SOURCE · MACOS & WINDOWS',
     tab: 'label_ORDER-48213.pdf',
   },
   pl: {
     brand: 'Intelligent label printing',
     h1: 'Drukuj etykiety kurierskie <em>jednym kliknięciem</em>',
     sub1: 'Przycina PDF-y A4 i A6 do samej etykiety i drukuje ją na drukarce etykiet albo zwykłej drukarce A4.',
-    free: '100% za darmo – na zawsze', noacc: 'Bez konta i subskrypcji', open: 'Otwarty kod', priv: 'Etykiety nie opuszczają komputera',
+    open: 'Otwarty kod (MIT)', noacc: 'Bez zakładania konta', os: 'macOS i Windows', priv: 'Etykiety nie opuszczają komputera',
     before: 'Twój PDF (A4)', after: 'Wydrukowana etykieta',
     h2: 'Wybierz profil drukarki. <em>Drukuj.</em>',
     sub2: 'PDF z bieżącej karty, z linku pod prawym przyciskiem albo z pobranych – prosto do drukarki, bez okna drukowania.',
@@ -79,7 +78,7 @@ const T = {
     sub5: 'Etykieta drukuje się w dokładnym polu A6 z liniami cięcia – jedna na arkusz albo cztery naraz.',
     one: '1 etykieta na arkusz', four: '4 etykiety na arkusz',
     promoSub: 'Przycinaj i drukuj etykiety jednym kliknięciem',
-    promoFree: 'ZA DARMO · OTWARTY KOD',
+    promoTag: 'OTWARTY KOD · MACOS I WINDOWS',
     tab: 'etykieta_ZAM-48213.pdf',
   },
 }[lang];
@@ -122,7 +121,7 @@ const iframeReady = (f) => new Promise((r) => f.addEventListener('load', () => s
 
 if (slide === '1') {
   root.append(el(`<div class="left">${brand}<h1>${T.h1}</h1><p class="sub">${T.sub1}</p>
-    <div class="badges"><span class="badge free">✓ ${T.free}</span><span class="badge">${T.noacc}</span><span class="badge">${T.open}</span><span class="badge">🔒 ${T.priv}</span></div></div>`));
+    <div class="badges"><span class="badge hi">✓ ${T.open}</span><span class="badge">${T.noacc}</span><span class="badge">${T.os}</span><span class="badge">🔒 ${T.priv}</span></div></div>`));
   const a4 = await pageCanvas(src, 1, 330);
   place(a4, { left: '600px', top: '150px' });
   place(el(`<div class="cap">${T.before}</div>`), { left: '600px', top: '115px' });
@@ -134,8 +133,7 @@ if (slide === '1') {
 }
 
 if (slide === '2') {
-  root.append(el(`<div class="left">${brand}<h1>${T.h2}</h1><p class="sub">${T.sub2}</p>
-    <div class="badges"><span class="badge free">✓ ${T.free}</span></div></div>`));
+  root.append(el(`<div class="left">${brand}<h1>${T.h2}</h1><p class="sub">${T.sub2}</p></div>`));
   // browser window with the PDF open, popup on top
   const win = place(el(`<div class="card" style="width:640px;height:600px;background:#2b2d31"></div>`), { left: '580px', top: '120px' });
   win.innerHTML = `<div style="height:44px;background:#f1f3f4;display:flex;align-items:center;gap:8px;padding:0 14px;border-bottom:1px solid #dadce0">
@@ -182,8 +180,7 @@ if (slide === '4') {
 }
 
 if (slide === '5') {
-  root.append(el(`<div class="left" style="width:500px">${brand}<h1 style="font-size:46px">${T.h5}</h1><p class="sub">${T.sub5}</p>
-    <div class="badges"><span class="badge free">✓ ${T.free}</span></div></div>`));
+  root.append(el(`<div class="left" style="width:500px">${brand}<h1 style="font-size:46px">${T.h5}</h1><p class="sub">${T.sub5}</p></div>`));
   const one = await processPdf(src, newProfile({ paper: 'A4', perSheet: 1, cutMarks: true }));
   const four = await processPdf(await fourUp(), newProfile({ paper: 'A4', perSheet: 4, cutMarks: true, cropMode: 'auto' }));
   place(await pageCanvas(one.bytes, 1, 300), { left: '620px', top: '165px' });
@@ -203,7 +200,7 @@ if (slide === 'promo') {
     <img src="/ext/icons/icon128.png" style="width:52px;height:52px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.25)">
     <div style="font-size:25px;font-weight:750;line-height:1.1;margin-top:14px;letter-spacing:-.01em">Intelligent label printing</div>
     <div style="font-size:14.5px;line-height:1.35;margin-top:8px;opacity:.92">${T.promoSub}</div>
-    <div style="display:inline-block;margin-top:14px;background:#16a34a;color:#fff;font-weight:750;font-size:12px;letter-spacing:.06em;padding:6px 11px;border-radius:999px">${T.promoFree}</div>
+    <div style="display:inline-block;margin-top:14px;background:rgba(255,255,255,.18);color:#fff;font-weight:750;font-size:12px;letter-spacing:.06em;padding:6px 11px;border-radius:999px">${T.promoTag}</div>
   </div>`), { left: '28px', top: '30px' });
 }
 
@@ -214,7 +211,7 @@ if (slide === 'marquee') {
   place(el(`<div style="color:#fff;width:640px">
     <div style="display:flex;align-items:center;gap:14px;font-size:22px;font-weight:650"><img src="/ext/icons/icon128.png" style="width:48px;height:48px;border-radius:11px">Intelligent label printing</div>
     <div style="font-size:54px;font-weight:780;line-height:1.06;margin-top:26px;letter-spacing:-.02em">${T.h1.replace(/<\/?em>/g, '')}</div>
-    <div style="display:inline-block;margin-top:26px;background:#16a34a;color:#fff;font-weight:750;font-size:17px;letter-spacing:.06em;padding:9px 16px;border-radius:999px">${T.promoFree}</div>
+    <div style="display:inline-block;margin-top:26px;background:rgba(255,255,255,.18);color:#fff;font-weight:750;font-size:17px;letter-spacing:.06em;padding:9px 16px;border-radius:999px">${T.promoTag}</div>
   </div>`), { left: '80px', top: '96px' });
   const a4 = await pageCanvas(src, 1, 250);
   place(a4, { left: '800px', top: '70px', transform: 'rotate(-4deg)' });

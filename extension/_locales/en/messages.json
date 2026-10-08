@@ -3,7 +3,7 @@
     "message": "Intelligent label printing"
   },
   "extDescription": {
-    "message": "Free, open-source courier label printing: crops A4/A6 label PDFs and prints them on your label or A4 printer in one click."
+    "message": "Open-source courier label printing: crops A4/A6 label PDFs and prints them on your label or A4 printer in one click."
   },
   "cmdPrintCurrent": {
     "message": "Print the label from the current tab (active profile)"
