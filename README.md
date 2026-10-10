@@ -1,5 +1,7 @@
 # Intelligent label printing
 
+**[➜ Install from the Chrome Web Store](https://chromewebstore.google.com/detail/intelligent-label-printin/fcfpnegfonhlplflgmjapjgkdcpdfkma)** · [Download the helper](https://github.com/kepak1/intelligent-label-printing/releases/latest) · [Support on Ko-fi](https://ko-fi.com/kepak1)
+
 A Chrome extension that prints courier labels in one click. The label in the PDF can fill a whole A6 page or sit on a quarter of an A4 page. Either way, the extension:
 
 1. renders each PDF page and detects its content (the label),
@@ -41,10 +43,12 @@ bash ~/Labelprinter/helper/build.sh
 ```
 
 ### 2. The extension
+Install it from the **[Chrome Web Store](https://chromewebstore.google.com/detail/intelligent-label-printin/fcfpnegfonhlplflgmjapjgkdcpdfkma)**, then pin the icon to the toolbar. It also works in Edge, Brave and other Chromium browsers.
+
+Without the store (development or testing):
 1. Open `chrome://extensions` and turn on **Developer mode**.
 2. Click **Load unpacked** and select the `extension` folder of the project, or the unzipped `extension-unpacked.zip` from the release. Don't use the Chrome Web Store zip: it gets a different ID.
-3. The extension has the fixed ID `fcfpnegfonhlplflgmjapjgkdcpdfkma`, which matches the installed helper.
-4. Pin the icon to the toolbar.
+3. Both ways give the same extension ID, `fcfpnegfonhlplflgmjapjgkdcpdfkma`, which matches the helper. Keep only one copy installed at a time.
 
 ### 3. Profiles
 In the extension settings, assign a printer to each profile (the list comes from the system) and pick the **media size in the driver**.
