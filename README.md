@@ -112,7 +112,6 @@ helper/           Native Messaging helper in Go (one binary, no dependencies)
   print_windows.go  Windows printing (winspool + GDI)
   install_*.go    self-registration with the browsers
   build.sh        builds everything into dist/
-store/            Chrome Web Store listing texts (EN/PL) and permission justifications
 keys/             the extension's private key – keep it safe, never publish it
 test-pdfs/        sample labels for testing
 ```

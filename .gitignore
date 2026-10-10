@@ -3,5 +3,5 @@ keys/
 dist/
 .DS_Store
 .claude/
-store/screenshots/node_modules/
-store/publish-helper.html
+# Chrome Web Store materials, blog posts and other local-only files
+store/
