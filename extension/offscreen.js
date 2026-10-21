@@ -1,5 +1,6 @@
 // Offscreen document: pdf.js runs here (it needs a DOM/canvas and workers).
 import { processPdf, rasterizePdf } from './engine.js';
+import { buildCodeLabel } from './codelabel.js';
 import { b64ToBytes, bytesToB64 } from './settings.js';
 
 chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
@@ -13,6 +14,12 @@ chrome.runtime.onMessage.addListener((msg, _sender, sendResponse) => {
   if (msg.type === 'rasterize') {
     rasterizePdf(b64ToBytes(msg.b64), msg.dpi)
       .then((pages) => sendResponse({ ok: true, images: pages.map(bytesToB64) }))
+      .catch((e) => sendResponse({ ok: false, error: String(e?.message || e) }));
+    return true;
+  }
+  if (msg.type === 'codeLabel') {
+    buildCodeLabel(msg.code, msg.opts, msg.profile, msg.meta)
+      .then(({ bytes, info, override }) => sendResponse({ ok: true, b64: bytesToB64(bytes), info, override }))
       .catch((e) => sendResponse({ ok: false, error: String(e?.message || e) }));
     return true;
   }

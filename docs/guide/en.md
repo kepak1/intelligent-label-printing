@@ -46,6 +46,16 @@ Tips:
 
 **Preview** shows the result before printing. **Automatic printing** (in the settings) prints PDFs downloaded from the sites you list.
 
+## Printing a shipping code
+
+If you get a code instead of a label, you can print it as a label:
+
+1. In the settings, open **Shipping code label** and tick **Enable code printing**.
+2. Choose the graphic code (QR code, barcode or none) and, if you like, a header, the date and time, and a daily sequence number.
+3. In the extension popup, paste the code and press **Enter**. Or select the code on a page and right-click → **Print as code**.
+
+On a label printer the code fills the whole label. With a long roll of continuous tape, open **Advanced** in the printer profile and turn on short prints. On an A4 printer the code is printed in a small area (A7) to cut out.
+
 ## Common problems
 
 - **The printer blinks red and does not print:** the media size does not match the loaded roll. Choose the custom size you use in the system print dialog.

@@ -710,5 +710,101 @@
   "help": {
     "message": "Help",
     "description": "Settings page. Link to the user guide in the chosen language."
+  },
+  "codeSection": {
+    "message": "Shipping code label",
+    "description": "Settings page. Heading of the section for printing a code or any text as a label."
+  },
+  "codeIntro": {
+    "message": "Print a shipping code or any other text as a label, e.g. when you get a code instead of a label.",
+    "description": "Settings page. Short explanation under the section heading."
+  },
+  "codeEnabled": {
+    "message": "Enable code printing (field in the extension popup)",
+    "description": "Settings page. Checkbox."
+  },
+  "codeContextMenu": {
+    "message": "Show “Print as code” in the right-click menu for selected text",
+    "description": "Settings page. Checkbox."
+  },
+  "codeSymbol": {
+    "message": "Graphic code",
+    "description": "Settings page. Label of the select: QR code, barcode or none."
+  },
+  "codeSymbolQr": {
+    "message": "QR code",
+    "description": "Settings page. Option."
+  },
+  "codeSymbolBarcode": {
+    "message": "Barcode (Code 128)",
+    "description": "Settings page. Option."
+  },
+  "codeSymbolNone": {
+    "message": "None",
+    "description": "Settings page. Option."
+  },
+  "codeHeader": {
+    "message": "Header",
+    "description": "Settings page. Checkbox: print a fixed text above the code."
+  },
+  "codeHeaderDefault": {
+    "message": "Shipping code",
+    "description": "Default text of the header printed above the code (the user can change it)."
+  },
+  "codeDate": {
+    "message": "Date and time of printing",
+    "description": "Settings page. Checkbox."
+  },
+  "codeNumber": {
+    "message": "Sequence number (starts at #1 every day)",
+    "description": "Settings page. Checkbox."
+  },
+  "codePlaceholder": {
+    "message": "Type or paste a code…",
+    "description": "Toolbar popup. Placeholder of the code field."
+  },
+  "printCode": {
+    "message": "Print code",
+    "description": "Toolbar popup. Button next to the code field."
+  },
+  "codeEnterHint": {
+    "message": "Enter prints too",
+    "description": "Toolbar popup. Small hint under the code field."
+  },
+  "codeEmpty": {
+    "message": "Enter a code first.",
+    "description": "Error when the code field is empty."
+  },
+  "code128Ascii": {
+    "message": "A barcode can only contain Latin letters, digits and basic symbols. Choose a QR code in the settings.",
+    "description": "Error when the text cannot be encoded as a Code 128 barcode."
+  },
+  "menuPrintCode": {
+    "message": "Print as code: “%s”",
+    "description": "Right-click menu for selected text. %s is replaced by Chrome with the selected text – keep it."
+  },
+  "statusCodeSent": {
+    "message": "✓ Code sent to {printer}",
+    "description": "Toolbar popup. Status after printing a code. {printer} = printer name."
+  },
+  "codeSummary": {
+    "message": "Shipping code label {w}×{h} mm.",
+    "description": "Preview and print page. Summary shown for a code label."
+  },
+  "advanced": {
+    "message": "Advanced",
+    "description": "Settings page. Collapsible section at the bottom of a printer profile."
+  },
+  "codeShort": {
+    "message": "Code labels: print only as much as the content needs (continuous tape)",
+    "description": "Settings page, advanced profile options. Checkbox."
+  },
+  "codeMinLength": {
+    "message": "Minimum length [mm]",
+    "description": "Settings page, advanced profile options. Number field."
+  },
+  "codeShortHint": {
+    "message": "For a long roll of continuous tape. With die-cut labels leave it off – the code fills the whole label. A4 profiles print the code in an A7 area to cut out.",
+    "description": "Settings page, advanced profile options. Hint under the checkbox."
   }
 }

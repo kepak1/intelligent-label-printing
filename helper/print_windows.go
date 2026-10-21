@@ -306,6 +306,9 @@ func jobDevMode(h uintptr, name string, req *Request) ([]byte, error) {
 			wMM, hMM = wMM*25.4/72, hMM*25.4/72
 		}
 		short, long := math.Min(wMM, hMM), math.Max(wMM, hMM)
+		if req.Options.ExactPaper {
+			short, long = wMM, hMM
+		}
 		setU16(dm, offPaperSize, dmpaperUser)
 		setU16(dm, offPaperWidth, uint16(math.Round(short*10)))
 		setU16(dm, offPaperLength, uint16(math.Round(long*10)))
@@ -314,7 +317,7 @@ func jobDevMode(h uintptr, name string, req *Request) ([]byte, error) {
 	// landscape pages print on portrait paper rotated by the driver
 	if wMM > 0 && hMM > 0 {
 		orient := uint16(1)
-		if wMM > hMM {
+		if wMM > hMM && !req.Options.ExactPaper {
 			orient = 2
 		}
 		setU16(dm, offOrientation, orient)

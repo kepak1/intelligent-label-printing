@@ -26,6 +26,11 @@
   .dl .name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dl .name small { display: block; color: var(--muted); }
   .host { font-size: 12px; margin-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .coderow { border-top: 1px solid var(--border); padding-top: 10px; margin-bottom: 8px; }
+  .coderow[hidden] { display: none; }
+  .coderow input { flex: 1; min-width: 0; }
+  .codehint { font-size: 11px; color: var(--muted); }
+  .codehint .linkbtn { font-size: 11px; }
   #status:empty { display: none; }
   #status { margin-top: 8px; }
   .linkbtn { border: none; background: none; color: var(--accent); padding: 0; }
@@ -44,6 +49,13 @@
   <div class="actions">
     <button class="primary" id="printTab" data-i18n="printTab"></button>
     <button id="previewTab" data-i18n="preview" data-i18n-title="previewHint"></button>
+  </div>
+  <div class="coderow" id="codeRow" hidden>
+    <div class="actions" style="margin-bottom:4px">
+      <input type="text" id="codeInput" autocomplete="off" spellcheck="false" data-i18n-placeholder="codePlaceholder">
+      <button id="printCode" data-i18n="printCode"></button>
+    </div>
+    <div class="codehint"><span data-i18n="codeEnterHint"></span> · <button class="linkbtn" id="previewCode" data-i18n="preview"></button></div>
   </div>
   <div id="status" class="status"></div>
 

@@ -1,7 +1,7 @@
 // Intelligent label printing – service worker: fetches the PDF, has it processed
 // (offscreen document) and prints it through the native helper (CUPS `lp`).
 
-import { loadSettings, activeProfile, paperSize, bytesToB64, b64ToBytes, looksLikePdf } from './settings.js';
+import { loadSettings, activeProfile, paperSize, bytesToB64, b64ToBytes, looksLikePdf, cleanCode } from './settings.js';
 import { getT, errorText, I18nError } from './i18n.js';
 
 const HOST = 'com.intelligent_label_printing.host';
@@ -154,15 +154,22 @@ function mediaFor(profile) {
 
 // macOS / Linux helpers take the PDF; the Windows helper takes page images
 // rendered at the printer's resolution (format reported by "ping").
-async function nativePrint(b64, profile, title) {
+// override: { paper, media, exactPaper } for jobs with their own page size
+// (a code label printed on continuous tape).
+async function nativePrint(b64, profile, title, override = null) {
   const ping = await native({ cmd: 'ping' });
   if (!ping.ok) return ping;
   const job = {
     cmd: 'print',
     printer: profile.printer,
     title,
-    paper: paperSize(profile),
-    options: { copies: profile.copies, media: mediaFor(profile), scaling: profile.printerScaling },
+    paper: override?.paper || paperSize(profile),
+    options: {
+      copies: profile.copies,
+      media: override?.media || mediaFor(profile),
+      scaling: profile.printerScaling,
+      exactPaper: !!override?.exactPaper,
+    },
   };
   if (ping.format === 'image') {
     const info = await native({ ...job, cmd: 'printerInfo' });
@@ -238,6 +245,58 @@ async function run(source, { profileId, action = 'print' } = {}) {
   }
 }
 
+// ---------- shipping code labels ----------
+
+// Daily sequence number: #1, #2… from the first code printed each day.
+const today = () => new Date().toLocaleDateString('sv'); // YYYY-MM-DD, local time
+
+async function nextCodeNumber() {
+  const { codeCounter } = await chrome.storage.local.get('codeCounter');
+  return codeCounter?.day === today() ? codeCounter.last + 1 : 1;
+}
+
+async function commitCodeNumber(n) {
+  if (n) await chrome.storage.local.set({ codeCounter: { day: today(), last: n } });
+}
+
+// action: 'print' | 'preview'
+async function runCode(text, { profileId, action = 'print' } = {}) {
+  const settings = await loadSettings();
+  const t = await getT(settings.language);
+  const profile = activeProfile(settings, profileId);
+  const opts = settings.codeLabel;
+  try {
+    const code = cleanCode(text, opts);
+    const meta = {
+      header: opts.header ? opts.headerText || t('codeHeaderDefault') : '',
+      // date and time in the format of the browser's language
+      date: opts.date ? new Date().toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : '',
+      number: opts.number ? await nextCodeNumber() : null,
+    };
+    const res = await offscreenCall({ type: 'codeLabel', code, opts, profile, meta });
+    if (!res?.ok) throw res?.error ? new Error(res.error) : new I18nError('errProcessing');
+    const job = { name: code, profileId: profile.id, b64: res.b64, info: res.info, srcB64: null, code: { code, meta, override: res.override } };
+
+    if (action === 'preview') { await openPreview(job, false); return { ok: true, info: res.info }; }
+    if (!profile.printer) {
+      await openPreview(job, true);
+      return { ok: true, info: res.info, fallback: t('fallbackNoPrinter') };
+    }
+    const r = await nativePrint(res.b64, profile, code, res.override);
+    if (r.noHost) {
+      await openPreview(job, true);
+      return { ok: true, info: res.info, fallback: t('fallbackNoHost') };
+    }
+    if (!r.ok) throw new I18nError('errPrinter', { error: r.error });
+    await commitCodeNumber(meta.number);
+    notify(settings, t('notifSentTitle'), `${code} → ${profile.printer}`);
+    return { ok: true, job: r.job, printer: profile.printer, code: true };
+  } catch (e) {
+    console.error(e);
+    return { ok: false, error: errorText(t, e) };
+  }
+}
+
 // ---------- context menu ----------
 
 const MENU_CONTEXTS = ['link', 'page', 'frame'];
@@ -257,22 +316,35 @@ async function rebuildMenus() {
   }
   chrome.contextMenus.create({ id: 'sep', parentId: 'root', type: 'separator', contexts: MENU_CONTEXTS });
   chrome.contextMenus.create({ id: 'preview', parentId: 'root', title: t('menuPreview'), contexts: MENU_CONTEXTS });
+  if (settings.codeLabel.enabled && settings.codeLabel.contextMenu) {
+    // Chrome puts the selected text in place of %s
+    chrome.contextMenus.create({ id: 'printCode', title: t('menuPrintCode'), contexts: ['selection'] });
+  }
 }
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
   const url = info.linkUrl || info.frameUrl || info.pageUrl || tab?.url;
   const source = { kind: 'url', url };
+  if (info.menuItemId === 'printCode') return runCode(info.selectionText);
   if (info.menuItemId === 'preview') run(source, { action: 'preview' });
   else if (String(info.menuItemId).startsWith('print:')) run(source, { profileId: info.menuItemId.slice(6) });
 });
 
+// Settings can change several times in a row; rebuild the menu one at a time,
+// otherwise overlapping rebuilds create duplicate items.
+let menuQueue = Promise.resolve();
+function scheduleMenus() {
+  menuQueue = menuQueue.then(rebuildMenus).catch((e) => console.error(e));
+  return menuQueue;
+}
+
 chrome.runtime.onInstalled.addListener(async (details) => {
-  await rebuildMenus();
+  await scheduleMenus();
   if (details.reason === 'install') chrome.runtime.openOptionsPage();
 });
-chrome.runtime.onStartup.addListener(rebuildMenus);
+chrome.runtime.onStartup.addListener(scheduleMenus);
 chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'local' && changes.settings) rebuildMenus();
+  if (area === 'local' && changes.settings) scheduleMenus();
 });
 
 // ---------- keyboard shortcut ----------
@@ -311,6 +383,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     switch (msg?.type) {
       case 'run':
         return run(msg.source, { profileId: msg.profileId, action: msg.action });
+      case 'runCode':
+        return runCode(msg.text, { profileId: msg.profileId, action: msg.action });
       case 'host':
         return native(msg.payload);
       case 'printProcessed': {
@@ -318,8 +392,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         const t = await getT(settings.language);
         const profile = activeProfile(settings, msg.profileId);
         if (!profile.printer) return { ok: false, noPrinter: true, error: t('errNoPrinter') };
-        const r = await nativePrint(msg.b64, profile, msg.name || 'Label');
-        if (r.ok) notify(settings, t('notifSentTitle'), `${msg.name || 'Label'} → ${profile.printer}`);
+        const r = await nativePrint(msg.b64, profile, msg.name || 'Label', msg.override);
+        if (r.ok) {
+          await commitCodeNumber(msg.codeNumber);
+          notify(settings, t('notifSentTitle'), `${msg.name || 'Label'} → ${profile.printer}`);
+        }
         return r;
       }
       default:

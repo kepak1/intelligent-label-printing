@@ -277,7 +277,34 @@ function bindEditor() {
   $('refresh').onclick = (e) => { e.preventDefault(); loadPrinters(); };
 }
 
+// ---------- shipping code label (shared options) ----------
+
+function renderCodeLabel() {
+  const c = settings.codeLabel;
+  for (const el of document.querySelectorAll('#codeSection [data-c]')) {
+    const k = el.dataset.c;
+    if (el === document.activeElement && el.type === 'text') continue; // don't disturb typing
+    if (el.type === 'checkbox') el.checked = !!c[k];
+    else el.value = c[k] ?? '';
+  }
+  $('codeOptions').hidden = !c.enabled;
+  document.querySelector('[data-c="headerText"]').disabled = !c.header;
+}
+
+function bindCodeLabel() {
+  const handler = (e) => {
+    const el = e.target.closest('[data-c]');
+    if (!el) return;
+    settings.codeLabel[el.dataset.c] = el.type === 'checkbox' ? el.checked : el.value;
+    save();
+    renderCodeLabel();
+  };
+  $('codeSection').addEventListener('change', handler);
+  $('codeSection').addEventListener('input', (e) => { if (e.target.dataset.c === 'headerText') handler(e); });
+}
+
 function refreshGlobal() {
+  renderCodeLabel();
   $('lang').value = settings.language;
   $('autoEnabled').checked = settings.autoPrint.enabled;
   $('autoDomains').value = settings.autoPrint.domains;
@@ -358,6 +385,7 @@ async function finishImport(mode) {
       language: s.language || settings.language,
       autoPrint: { ...settings.autoPrint, ...(s.autoPrint || {}) },
       notifications: s.notifications ?? settings.notifications,
+      codeLabel: { ...settings.codeLabel, ...(s.codeLabel || {}) },
       profiles: incoming,
       activeProfileId: incoming.some((p) => p.id === s.activeProfileId) ? s.activeProfileId : incoming[0].id,
     };
@@ -516,5 +544,6 @@ $('checkHost').onclick = () => loadPrinters();
 bindEditor();
 await bindGlobal();
 bindBackup();
+bindCodeLabel();
 await applyLanguage();
 loadPrinters();

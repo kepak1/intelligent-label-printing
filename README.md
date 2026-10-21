@@ -80,6 +80,13 @@ Many label printers, the Brother QL among them, print reliably only with the cus
 - **Automatic printing** (optional): PDFs downloaded from the listed domains print by themselves.
 - **Preview**: shows the cropping result (sizes, scale, rotation) and lets you compare profiles before printing.
 
+### Printing a shipping code or any text
+Some services give you a short code instead of a label. Turn on **Settings → Shipping code label** and the popup gets a field: paste the code and press Enter. You can also select the code on a page and right-click → **Print as code**.
+- **Graphic code:** QR code, Code 128 barcode or none. It contains exactly the text you entered.
+- **Optional extras:** a header (default "Shipping code"), the date and time, and a daily sequence number (#1, #2… from the first code each day).
+- **Label printers:** the code fills the whole label. With a long roll of continuous tape, turn on **Advanced → print only as much as the content needs** in the printer profile; the label is then only as long as needed (at least the minimum length you set).
+- **A4 printers:** the code is printed in an A7 area (74×105 mm) to cut out, in the corner chosen for the A6 area.
+
 ## Moving settings to another computer
 In **Settings → Backup & transfer**, click **Export to file** to save all profiles and settings as a JSON file. On the other computer, click **Import from file…** and choose one of two options:
 - **Replace all settings**: the file becomes the full configuration.

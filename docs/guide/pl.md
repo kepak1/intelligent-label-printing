@@ -44,6 +44,16 @@ Wskazówki:
 
 **Podgląd** pokazuje wynik przed wydrukiem. **Automatyczny druk** (w ustawieniach) drukuje PDF-y pobrane z podanych stron.
 
+## Drukowanie kodu nadania
+
+Jeśli zamiast etykiety dostajesz kod, możesz go wydrukować jako etykietę:
+
+1. W ustawieniach, w sekcji **Etykieta z kodem nadania**, zaznacz **Włącz drukowanie kodów**.
+2. Wybierz kod graficzny (QR, kod kreskowy albo brak) i opcjonalnie nagłówek, datę i godzinę oraz numer porządkowy (od #1 każdego dnia).
+3. W okienku wtyczki wklej kod i naciśnij **Enter**. Możesz też zaznaczyć kod na stronie i kliknąć prawym przyciskiem → **Drukuj jako kod**.
+
+Na drukarce etykiet kod wypełnia całą etykietę. Przy długiej rolce taśmy ciągłej otwórz **Zaawansowane** w profilu drukarki i włącz krótki wydruk. Na drukarce A4 kod drukuje się w małym polu (A7) do odcięcia.
+
 ## Najczęstsze problemy
 
 - **Drukarka miga na czerwono i nic nie drukuje:** rozmiar nośnika nie pasuje do załadowanej rolki. Wybierz własny rozmiar, którego używasz w systemowym oknie drukowania.

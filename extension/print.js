@@ -1,6 +1,7 @@
 import { loadSettings, activeProfile, profileSummary, b64ToBytes, bytesToB64, looksLikePdf } from './settings.js';
 import { getT, applyI18n, errorText } from './i18n.js';
 import { processPdf } from './engine.js';
+import { buildCodeLabel } from './codelabel.js';
 
 const $ = (id) => document.getElementById(id);
 const params = new URLSearchParams(location.search);
@@ -8,6 +9,7 @@ let settings;
 let t;
 let src = null; // { bytes, name }
 let out = null; // { b64, info }
+let codeJob = null; // { code, meta, override } when the job is a shipping code label
 let blobUrl = null;
 
 function setStatus(text, kind = 'info') {
@@ -18,6 +20,13 @@ function setStatus(text, kind = 'info') {
 function profileId() { return $('profile').value; }
 
 function renderInfo(info) {
+  if (info.kind === 'code') {
+    const summary = document.createElement('p');
+    summary.className = 'muted';
+    summary.textContent = t('codeSummary', { w: info.paper.w, h: info.paper.h });
+    $('info').replaceChildren(summary);
+    return;
+  }
   const rows = info.details.map((d, i) => `<tr><td>${i + 1}</td><td>${d.page}</td><td>${d.sourceMm.w}×${d.sourceMm.h}</td><td>${d.cropMm.w}×${d.cropMm.h}</td><td>${d.scale ? Math.round(d.scale * 100) + '%' : '–'}</td><td>${d.rotated ? d.rotated + '°' : '–'}</td></tr>`).join('');
   const summary = t('infoSummary', {
     labels: t('labels', { n: info.labels }),
@@ -48,10 +57,17 @@ function showProfileStatus(p) {
 }
 
 async function reprocess() {
-  if (!src) return;
+  if (!src && !codeJob) return;
   const profile = activeProfile(settings, profileId());
   setStatus(t('processing'));
   try {
+    if (codeJob) {
+      const res = await buildCodeLabel(codeJob.code, settings.codeLabel, profile, codeJob.meta);
+      codeJob.override = res.override;
+      show(bytesToB64(res.bytes), res.info);
+      showProfileStatus(profile);
+      return;
+    }
     const { bytes, info } = await processPdf(src.bytes, profile);
     show(bytesToB64(bytes), info);
     showProfileStatus(profile);
@@ -64,6 +80,7 @@ async function loadFile(file) {
   const bytes = new Uint8Array(await file.arrayBuffer());
   if (!looksLikePdf(bytes)) return setStatus(t('notPdf'), 'err');
   src = { bytes, name: file.name };
+  codeJob = null;
   $('file').textContent = file.name;
   await reprocess();
 }
@@ -88,13 +105,16 @@ $('sysprint').onclick = sysPrint;
 $('download').onclick = () => {
   const a = document.createElement('a');
   a.href = blobUrl;
-  a.download = (src?.name || 'label.pdf').replace(/\.pdf$/i, '') + '_label.pdf';
+  a.download = codeJob ? 'code_label.pdf' : (src?.name || 'label.pdf').replace(/\.pdf$/i, '') + '_label.pdf';
   a.click();
 };
 $('print').onclick = async () => {
   $('print').disabled = true;
   setStatus(t('sending'));
-  const r = await chrome.runtime.sendMessage({ type: 'printProcessed', b64: out.b64, profileId: profileId(), name: src?.name });
+  const r = await chrome.runtime.sendMessage({
+    type: 'printProcessed', b64: out.b64, profileId: profileId(), name: codeJob?.code || src?.name,
+    override: codeJob?.override, codeNumber: codeJob?.meta?.number,
+  });
   $('print').disabled = false;
   if (r?.ok) setStatus(t('sentJob', { job: r.job }), 'ok');
   else if (r?.noHost) setStatus(t('noHostPrint'), 'err');
@@ -115,6 +135,7 @@ if (jobId) {
     $('file').textContent = job.name;
     if (job.profileId) $('profile').value = job.profileId;
     if (job.srcB64) src = { bytes: b64ToBytes(job.srcB64), name: job.name };
+    if (job.code) codeJob = job.code;
     show(job.b64, job.info, params.get('autoprint') === '1');
     showProfileStatus(activeProfile(settings, job.profileId));
   } else {

@@ -57,6 +57,29 @@ function timeAgo(iso) {
   return new Date(iso).toLocaleDateString(t.locale);
 }
 
+// Shipping code: print the typed text as a label (only when enabled in the settings).
+async function runCode(action = 'print') {
+  const text = $('codeInput').value.trim();
+  if (!text) {
+    setStatus(t('codeEmpty'), 'err');
+    $('codeInput').focus();
+    return;
+  }
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach((b) => (b.disabled = true));
+  setStatus(t(action === 'print' ? 'statusPrinting' : 'statusPreparing'));
+  try {
+    const r = await chrome.runtime.sendMessage({ type: 'runCode', text, action });
+    if (!r?.ok) return setStatus(r?.error || t('unknownError'), 'err');
+    if (action === 'preview') return window.close();
+    $('codeInput').value = '';
+    if (r.fallback) setStatus(r.fallback, 'info');
+    else setStatus(t('statusCodeSent', { printer: r.printer }) + (r.job ? ` (${r.job})` : ''), 'ok');
+  } finally {
+    buttons.forEach((b) => (b.disabled = false));
+  }
+}
+
 async function renderDownloads() {
   const items = (await chrome.downloads.search({ orderBy: ['-startTime'], limit: 40, state: 'complete' }))
     .filter((d) => d.exists !== false && (d.mime === 'application/pdf' || /\.pdf$/i.test(d.filename)))
@@ -96,6 +119,7 @@ async function render() {
   t = await getT(settings.language);
   document.documentElement.lang = t.locale;
   applyI18n(t);
+  $('codeRow').hidden = !settings.codeLabel?.enabled;
   renderProfiles();
   renderDownloads();
   checkHost();
@@ -105,6 +129,10 @@ $('openOptions').onclick = () => chrome.runtime.openOptionsPage();
 $('openFile').onclick = () => chrome.tabs.create({ url: chrome.runtime.getURL('print.html') });
 $('printTab').onclick = async () => run(await activeTabSource());
 $('previewTab').onclick = async () => run(await activeTabSource(), 'preview');
+$('printCode').onclick = () => runCode();
+$('previewCode').onclick = () => runCode('preview');
+$('codeInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') runCode(); });
+$('codeInput').addEventListener('input', () => setStatus(''));
 
 settings = await loadSettings();
 for (const [code, { name }] of Object.entries(await getLanguages())) {
@@ -119,3 +147,4 @@ $('lang').onchange = async (e) => {
   await render();
 };
 await render();
+if (settings.codeLabel?.enabled) $('codeInput').focus();

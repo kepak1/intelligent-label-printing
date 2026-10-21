@@ -35,8 +35,35 @@ export function newProfile(overrides = {}) {
     padding: 1, // mm of extra space around detected content
     gap: 8, // mm – white gaps wider than this separate content blocks
     threshold: 235, // 0-255, lighter pixels count as white
+    codeShort: false, // code labels on continuous tape: only as long as the content
+    codeMinLength: 30, // mm, minimum length of such a short print
     ...overrides,
   };
+}
+
+// Shipping code label options (shared by all profiles).
+export function defaultCodeLabel(t, overrides = {}) {
+  return {
+    enabled: false, // the code field in the popup
+    contextMenu: true, // "Print as code" for selected text
+    symbol: 'qr', // qr | code128 | none
+    header: false,
+    headerText: t('codeHeaderDefault'),
+    date: false,
+    number: false, // daily sequence number
+    ...overrides,
+  };
+}
+
+// Code 128 (set B) can encode printable ASCII only.
+const isCode128Text = (s) => [...s].every((c) => c.charCodeAt(0) >= 32 && c.charCodeAt(0) <= 126);
+
+// The code to print, trimmed; throws an Error whose message is a translation key.
+export function cleanCode(text, opts) {
+  const code = String(text ?? '').trim();
+  if (!code) throw new Error('codeEmpty');
+  if (opts.symbol === 'code128' && !isCode128Text(code)) throw new Error('code128Ascii');
+  return code;
 }
 
 export async function defaultSettings(language = 'en') {
@@ -49,6 +76,7 @@ export async function defaultSettings(language = 'en') {
     activeProfileId: a4.id,
     autoPrint: { enabled: false, domains: '' },
     notifications: true,
+    codeLabel: defaultCodeLabel(t),
   };
 }
 
@@ -75,6 +103,9 @@ export async function loadSettings() {
   settings.autoPrint = { enabled: false, domains: '', ...(settings.autoPrint || {}) };
   if (settings.notifications === undefined) settings.notifications = true;
   if (!settings.language) settings.language = 'en';
+  if (!settings.codeLabel || settings.codeLabel.headerText === undefined) {
+    settings.codeLabel = defaultCodeLabel(await getT(settings.language), settings.codeLabel || {});
+  }
   if (!settings.profiles.some((p) => p.id === settings.activeProfileId)) {
     settings.activeProfileId = settings.profiles[0].id;
   }

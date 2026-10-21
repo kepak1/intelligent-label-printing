@@ -37,6 +37,9 @@
   .positions { display: grid; grid-template-columns: repeat(2, 56px); gap: 4px; }
   .positions button { height: 70px; padding: 0; font-size: 11px; color: var(--muted); }
   .positions button.sel { background: var(--accent); color: var(--accent-text); border-color: var(--accent); }
+  .advanced { border-top: 1px solid var(--border); margin-top: 14px; padding-top: 10px; }
+  .advanced summary { cursor: pointer; color: var(--muted); font-size: 13px; margin-bottom: 10px; }
+  #codeOptions[hidden] { display: none; }
   .sheetonly[hidden], .customonly[hidden], #paperManual[hidden], .paperline[hidden] { display: none; }
   .paperline { margin: 0 0 12px; padding: 9px 12px; border-radius: 8px; background: var(--accent-soft); }
   header .grow { flex: 1; }
@@ -139,6 +142,13 @@
         <p class="hint" data-i18n="detectHint"></p>
       </fieldset>
 
+      <details class="advanced" id="advanced">
+        <summary data-i18n="advanced"></summary>
+        <label class="check"><input type="checkbox" data-k="codeShort"> <span data-i18n="codeShort"></span></label>
+        <label class="field" style="max-width:220px;margin-left:24px"><span data-i18n="codeMinLength"></span><input type="number" min="10" max="300" step="1" data-k="codeMinLength"></label>
+        <p class="hint" style="margin-left:24px" data-i18n="codeShortHint"></p>
+      </details>
+
       <div class="bar">
         <button class="primary" id="makeActive" data-i18n="setActive"></button>
         <button id="duplicate" data-i18n="duplicate"></button>
@@ -148,6 +158,28 @@
       </div>
     </div>
   </div>
+
+  <section class="panel" id="codeSection">
+    <h2 data-i18n="codeSection"></h2>
+    <p class="muted" data-i18n="codeIntro" style="margin-top:-6px"></p>
+    <label class="check"><input type="checkbox" data-c="enabled"> <span data-i18n="codeEnabled"></span></label>
+    <div id="codeOptions">
+      <label class="check" style="margin-left:24px"><input type="checkbox" data-c="contextMenu"> <span data-i18n="codeContextMenu"></span></label>
+      <div class="row" style="margin-top:8px">
+        <label class="field"><span data-i18n="codeSymbol"></span>
+          <select data-c="symbol">
+            <option value="qr" data-i18n="codeSymbolQr"></option>
+            <option value="code128" data-i18n="codeSymbolBarcode"></option>
+            <option value="none" data-i18n="codeSymbolNone"></option>
+          </select></label>
+        <div></div>
+      </div>
+      <label class="check"><input type="checkbox" data-c="header"> <span data-i18n="codeHeader"></span></label>
+      <input type="text" data-c="headerText" style="margin:0 0 10px 24px;width:calc(100% - 24px);max-width:420px">
+      <label class="check"><input type="checkbox" data-c="date"> <span data-i18n="codeDate"></span></label>
+      <label class="check"><input type="checkbox" data-c="number"> <span data-i18n="codeNumber"></span></label>
+    </div>
+  </section>
 
   <section class="panel">
     <h2 data-i18n="autoSection"></h2>

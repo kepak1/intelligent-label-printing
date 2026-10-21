@@ -20,7 +20,7 @@ import (
 )
 
 const (
-	Version  = "2.0.6"
+	Version  = "2.1.0"
 	HostName = "com.intelligent_label_printing.host"
 	maxChunk = 600 * 1024 // file bytes per message (helper -> Chrome is limited to 1 MB)
 )
@@ -60,6 +60,9 @@ type PrintOptions struct {
 	Copies  int    `json:"copies"`
 	Media   string `json:"media"`
 	Scaling string `json:"scaling"` // "none" | "fit"
+	// ExactPaper: the page width is the paper width (e.g. a roll of continuous
+	// tape printing a short label) – don't swap sides or rotate on Windows.
+	ExactPaper bool `json:"exactPaper"`
 }
 
 type Request struct {

@@ -95,9 +95,10 @@ export function errorText(t, e) {
   return translated === msg ? msg : translated;
 }
 
-// Fills elements marked with data-i18n (text), data-i18n-html, data-i18n-title.
+// Fills elements marked with data-i18n (text), data-i18n-html, data-i18n-title, data-i18n-placeholder.
 export function applyI18n(t, root = document) {
   for (const el of root.querySelectorAll('[data-i18n]')) el.textContent = t(el.dataset.i18n);
   for (const el of root.querySelectorAll('[data-i18n-html]')) el.innerHTML = t(el.dataset.i18nHtml);
   for (const el of root.querySelectorAll('[data-i18n-title]')) el.title = t(el.dataset.i18nTitle);
+  for (const el of root.querySelectorAll('[data-i18n-placeholder]')) el.placeholder = t(el.dataset.i18nPlaceholder);
 }

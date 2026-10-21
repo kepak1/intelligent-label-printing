@@ -550,5 +550,77 @@
   },
   "help": {
     "message": "Pomoc"
+  },
+  "codeSection": {
+    "message": "Etykieta z kodem nadania"
+  },
+  "codeIntro": {
+    "message": "Drukuj kod nadania albo dowolny tekst jako etykietę, np. gdy zamiast etykiety dostajesz kod."
+  },
+  "codeEnabled": {
+    "message": "Włącz drukowanie kodów (pole w okienku wtyczki)"
+  },
+  "codeContextMenu": {
+    "message": "Pokaż „Drukuj jako kod” pod prawym przyciskiem dla zaznaczonego tekstu"
+  },
+  "codeSymbol": {
+    "message": "Kod graficzny"
+  },
+  "codeSymbolQr": {
+    "message": "Kod QR"
+  },
+  "codeSymbolBarcode": {
+    "message": "Kod kreskowy (Code 128)"
+  },
+  "codeSymbolNone": {
+    "message": "Brak"
+  },
+  "codeHeader": {
+    "message": "Nagłówek"
+  },
+  "codeHeaderDefault": {
+    "message": "Kod nadania"
+  },
+  "codeDate": {
+    "message": "Data i godzina wydruku"
+  },
+  "codeNumber": {
+    "message": "Numer porządkowy (od #1 każdego dnia)"
+  },
+  "codePlaceholder": {
+    "message": "Wpisz lub wklej kod…"
+  },
+  "printCode": {
+    "message": "Drukuj kod"
+  },
+  "codeEnterHint": {
+    "message": "Enter też drukuje"
+  },
+  "codeEmpty": {
+    "message": "Najpierw wpisz kod."
+  },
+  "code128Ascii": {
+    "message": "Kod kreskowy może zawierać tylko litery łacińskie, cyfry i podstawowe znaki. Wybierz kod QR w ustawieniach."
+  },
+  "menuPrintCode": {
+    "message": "Drukuj jako kod: „%s”"
+  },
+  "statusCodeSent": {
+    "message": "✓ Wysłano kod na {printer}"
+  },
+  "codeSummary": {
+    "message": "Etykieta z kodem {w}×{h} mm."
+  },
+  "advanced": {
+    "message": "Zaawansowane"
+  },
+  "codeShort": {
+    "message": "Etykiety z kodem: drukuj tylko fragment dopasowany do treści (taśma ciągła)"
+  },
+  "codeMinLength": {
+    "message": "Minimalna długość [mm]"
+  },
+  "codeShortHint": {
+    "message": "Dla długiej rolki taśmy ciągłej. Przy naklejkach wycinanych zostaw wyłączone – kod wypełni całą etykietę. Profile A4 drukują kod w polu A7 do odcięcia."
   }
 }
