@@ -1,11 +1,714 @@
 {
   "extName": {
-    "message": "Intelligent label printing"
+    "message": "Intelligent label printing",
+    "description": "Extension name (Chrome Web Store, chrome://extensions). Usually not translated."
   },
   "extDescription": {
-    "message": "Open-source courier label printing: crops A4/A6 label PDFs and prints them on your label or A4 printer in one click."
+    "message": "Open-source courier label printing: crops A4/A6 label PDFs and prints them on your label or A4 printer in one click.",
+    "description": "Short description in the Chrome Web Store, max 132 characters."
   },
   "cmdPrintCurrent": {
-    "message": "Print the label from the current tab (active profile)"
+    "message": "Print the label from the current tab (active profile)",
+    "description": "Description of the keyboard shortcut in chrome://extensions/shortcuts."
+  },
+  "appName": {
+    "message": "Intelligent label printing",
+    "description": "General"
+  },
+  "noPrinter": {
+    "message": "no printer",
+    "description": "General"
+  },
+  "settings": {
+    "message": "Settings",
+    "description": "General"
+  },
+  "language": {
+    "message": "Language",
+    "description": "General"
+  },
+  "loading": {
+    "message": "Loading…",
+    "description": "General"
+  },
+  "unknownError": {
+    "message": "Unknown error",
+    "description": "General"
+  },
+  "paper_A4": {
+    "message": "A4 (210×297 mm) – label in an A6 area to cut out",
+    "description": "Settings page: paper size option"
+  },
+  "paper_A6": {
+    "message": "A6 (105×148 mm)",
+    "description": "Settings page: paper size option"
+  },
+  "paper_100x150": {
+    "message": "100×150 mm (typical thermal label)",
+    "description": "Settings page: paper size option"
+  },
+  "paper_4x6": {
+    "message": "4×6\" (101.6×152.4 mm)",
+    "description": "Settings page: paper size option"
+  },
+  "paper_custom": {
+    "message": "Custom size",
+    "description": "Settings page: paper size option"
+  },
+  "defaultProfileA4": {
+    "message": "A4 printer (cut to A6)",
+    "description": "General"
+  },
+  "defaultProfileA6": {
+    "message": "A6 label printer",
+    "description": "General"
+  },
+  "newProfileName": {
+    "message": "Profile {n}",
+    "description": "General. Keep {n} unchanged."
+  },
+  "copySuffix": {
+    "message": " (copy)",
+    "description": "General. Appended to the name of a duplicated profile. Starts with a space."
+  },
+  "printTab": {
+    "message": "Print PDF from this tab",
+    "description": "Toolbar popup"
+  },
+  "preview": {
+    "message": "Preview",
+    "description": "Toolbar popup"
+  },
+  "previewHint": {
+    "message": "Preview without printing",
+    "description": "Toolbar popup"
+  },
+  "recentPdfs": {
+    "message": "Recently downloaded PDFs",
+    "description": "Toolbar popup"
+  },
+  "noDownloads": {
+    "message": "No downloaded PDF files.",
+    "description": "Toolbar popup"
+  },
+  "print": {
+    "message": "Print",
+    "description": "Toolbar popup"
+  },
+  "hostChecking": {
+    "message": "Checking print helper…",
+    "description": "Toolbar popup"
+  },
+  "hostOk": {
+    "message": "Print helper connected",
+    "description": "Toolbar popup"
+  },
+  "hostMissing": {
+    "message": "No print helper – printing via system dialog",
+    "description": "Toolbar popup"
+  },
+  "openFile": {
+    "message": "Open file from disk…",
+    "description": "Toolbar popup"
+  },
+  "statusPrinting": {
+    "message": "Processing and sending to the printer…",
+    "description": "Toolbar popup"
+  },
+  "statusPreparing": {
+    "message": "Preparing preview…",
+    "description": "Toolbar popup"
+  },
+  "justNow": {
+    "message": "just now",
+    "description": "Toolbar popup"
+  },
+  "minAgo": {
+    "message": "{n} min ago",
+    "description": "Toolbar popup. Keep {n} unchanged."
+  },
+  "hoursAgo": {
+    "message": "{n} h ago",
+    "description": "Toolbar popup. Keep {n} unchanged."
+  },
+  "NO_CONTENT": {
+    "message": "No content found in the PDF (blank pages?).",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errDownloadMissing": {
+    "message": "Downloaded file not found.",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errDownloadFailed": {
+    "message": "Chrome could not download the PDF from this link.",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errHostNeededRead": {
+    "message": "Reading downloaded files requires the print helper (see Settings).",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errTabUnreadable": {
+    "message": "This tab cannot be read (not an http/https/file address). Download the PDF and use “Recently downloaded”.",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errHttp": {
+    "message": "Could not download the PDF (HTTP {status}).",
+    "description": "Notifications, context menu and error messages. Keep {status} unchanged."
+  },
+  "errUnknownSource": {
+    "message": "Unknown file source.",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errNotPdf": {
+    "message": "The file is not a PDF (maybe the page requires you to log in?).",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errProcessing": {
+    "message": "PDF processing error.",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errNoPrinter": {
+    "message": "This profile has no printer selected.",
+    "description": "Notifications, context menu and error messages"
+  },
+  "errPrinter": {
+    "message": "Printer: {error}",
+    "description": "Notifications, context menu and error messages. Keep {error} unchanged."
+  },
+  "fallbackNoPrinter": {
+    "message": "This profile has no printer selected – opened the print dialog.",
+    "description": "Notifications, context menu and error messages"
+  },
+  "fallbackNoHost": {
+    "message": "Print helper not installed – opened the system print dialog.",
+    "description": "Notifications, context menu and error messages"
+  },
+  "notifSentTitle": {
+    "message": "Sent to printer",
+    "description": "Notifications, context menu and error messages"
+  },
+  "notifSentBody": {
+    "message": "{name} → {printer} ({labels})",
+    "description": "Notifications, context menu and error messages. Keep {name}, {printer}, {labels} unchanged."
+  },
+  "notifErrorTitle": {
+    "message": "Label printing failed",
+    "description": "Notifications, context menu and error messages"
+  },
+  "menuPrint": {
+    "message": "Print: {name}",
+    "description": "Notifications, context menu and error messages. Keep {name} unchanged."
+  },
+  "menuPreview": {
+    "message": "Preview (active profile)",
+    "description": "Notifications, context menu and error messages"
+  },
+  "previewTitle": {
+    "message": "Preview & print",
+    "description": "Preview and print page"
+  },
+  "dropHere": {
+    "message": "Drop a label PDF here",
+    "description": "Preview and print page"
+  },
+  "dropOr": {
+    "message": "or <u>click to choose a file</u>",
+    "description": "Preview and print page. Contains HTML tags – keep them."
+  },
+  "printerProfile": {
+    "message": "Printer profile",
+    "description": "Preview and print page"
+  },
+  "printOnProfile": {
+    "message": "Print on the profile’s printer",
+    "description": "Preview and print page"
+  },
+  "printSystem": {
+    "message": "Print via system dialog",
+    "description": "Preview and print page"
+  },
+  "savePdf": {
+    "message": "Save processed PDF",
+    "description": "Preview and print page"
+  },
+  "profileSettings": {
+    "message": "Profile settings",
+    "description": "Preview and print page"
+  },
+  "noDocument": {
+    "message": "No document",
+    "description": "Preview and print page"
+  },
+  "thPage": {
+    "message": "Page",
+    "description": "Preview and print page"
+  },
+  "thSource": {
+    "message": "Page [mm]",
+    "description": "Preview and print page"
+  },
+  "thCrop": {
+    "message": "Cropped [mm]",
+    "description": "Preview and print page"
+  },
+  "thScale": {
+    "message": "Scale",
+    "description": "Preview and print page"
+  },
+  "thRotation": {
+    "message": "Rotation",
+    "description": "Preview and print page"
+  },
+  "processing": {
+    "message": "Processing…",
+    "description": "Preview and print page"
+  },
+  "profileStatus": {
+    "message": "Profile: {name} – {summary}",
+    "description": "Preview and print page. Keep {name}, {summary} unchanged."
+  },
+  "notPdf": {
+    "message": "This is not a PDF file.",
+    "description": "Preview and print page"
+  },
+  "sending": {
+    "message": "Sending to the printer…",
+    "description": "Preview and print page"
+  },
+  "sentJob": {
+    "message": "✓ Sent to the printer ({job})",
+    "description": "Preview and print page. Keep {job} unchanged."
+  },
+  "noHostPrint": {
+    "message": "No print helper – use “Print via system dialog” or install the helper (Settings).",
+    "description": "Preview and print page"
+  },
+  "printError": {
+    "message": "Printing error",
+    "description": "Preview and print page"
+  },
+  "jobExpired": {
+    "message": "This job has expired – choose the file again.",
+    "description": "Preview and print page"
+  },
+  "optSubtitle": {
+    "message": "Printer profiles and label cropping",
+    "description": "Settings page"
+  },
+  "active": {
+    "message": "ACTIVE",
+    "description": "Settings page"
+  },
+  "addProfile": {
+    "message": "+ Add profile",
+    "description": "Settings page"
+  },
+  "profileName": {
+    "message": "Profile name",
+    "description": "Settings page"
+  },
+  "printerSection": {
+    "message": "Printer",
+    "description": "Settings page"
+  },
+  "systemPrinter": {
+    "message": "Printer (from the system)",
+    "description": "Settings page"
+  },
+  "refreshPrinters": {
+    "message": "Refresh printer list",
+    "description": "Settings page"
+  },
+  "noPrinterOption": {
+    "message": "— none (system dialog) —",
+    "description": "Settings page"
+  },
+  "defaultMark": {
+    "message": " (default)",
+    "description": "Settings page"
+  },
+  "unavailable": {
+    "message": " (unavailable)",
+    "description": "Settings page"
+  },
+  "driverMedia": {
+    "message": "Media size in the driver",
+    "description": "Settings page"
+  },
+  "driverDefault": {
+    "message": "— driver default{media} —",
+    "description": "Settings page. Keep {media} unchanged."
+  },
+  "mediaGroupCustom": {
+    "message": "Custom sizes (macOS print dialog)",
+    "description": "Settings page"
+  },
+  "mediaGroupDriver": {
+    "message": "Driver sizes",
+    "description": "Settings page"
+  },
+  "mediaFromPaper": {
+    "message": "Custom size = paper set below",
+    "description": "Settings page"
+  },
+  "lastUsedMark": {
+    "message": " ★ last used on this Mac",
+    "description": "Settings page"
+  },
+  "printerScaling": {
+    "message": "Printer-side scaling",
+    "description": "Settings page"
+  },
+  "scalingNone": {
+    "message": "None – 100% (recommended)",
+    "description": "Settings page"
+  },
+  "scalingFit": {
+    "message": "Fit to page",
+    "description": "Settings page"
+  },
+  "copies": {
+    "message": "Copies",
+    "description": "Settings page"
+  },
+  "paperSection": {
+    "message": "Paper and layout",
+    "description": "Settings page"
+  },
+  "loadedPaper": {
+    "message": "Paper loaded in the printer",
+    "description": "Settings page"
+  },
+  "widthMm": {
+    "message": "Width [mm]",
+    "description": "Settings page"
+  },
+  "heightMm": {
+    "message": "Height [mm]",
+    "description": "Settings page"
+  },
+  "sheetHint": {
+    "message": "The label is printed in an A6 area (105×148 mm) that you simply cut out of the A4 sheet.",
+    "description": "Settings page"
+  },
+  "perSheet": {
+    "message": "Labels per A4 sheet",
+    "description": "Settings page"
+  },
+  "perSheet2": {
+    "message": "2 (top row)",
+    "description": "Settings page"
+  },
+  "cutMarks": {
+    "message": "Draw cut lines",
+    "description": "Settings page"
+  },
+  "position": {
+    "message": "Position of the A6 area on the sheet",
+    "description": "Settings page"
+  },
+  "posTl": {
+    "message": "top<br>left",
+    "description": "Settings page. Contains HTML tags – keep them."
+  },
+  "posTr": {
+    "message": "top<br>right",
+    "description": "Settings page. Contains HTML tags – keep them."
+  },
+  "posBl": {
+    "message": "bottom<br>left",
+    "description": "Settings page. Contains HTML tags – keep them."
+  },
+  "posBr": {
+    "message": "bottom<br>right",
+    "description": "Settings page. Contains HTML tags – keep them."
+  },
+  "margin": {
+    "message": "Margin inside the label area [mm]",
+    "description": "Settings page"
+  },
+  "autoRotate": {
+    "message": "Rotate the label automatically",
+    "description": "Settings page"
+  },
+  "upscale": {
+    "message": "Enlarge small labels",
+    "description": "Settings page"
+  },
+  "unprintable": {
+    "message": "Non-printable edges reported by the driver (applied automatically): left {l}, top {t}, right {r}, bottom {b} mm.",
+    "description": "Settings page. Keep {l}, {t}, {r}, {b} unchanged."
+  },
+  "continuousHint": {
+    "message": "This is continuous tape – the driver page is {mw}×{mh} mm. For die-cut labels choose the matching size (e.g. “102 mm x 152 mm”).",
+    "description": "Settings page. Keep {mw}, {mh} unchanged."
+  },
+  "paperFromMedia": {
+    "message": "Paper: {w} × {h} mm – taken from the media size above.",
+    "description": "Settings page. Keep {w}, {h} unchanged."
+  },
+  "paperFromMediaSheet": {
+    "message": "Paper: A4 ({w} × {h} mm) – taken from the media size above. The label goes into an A6 area to cut out.",
+    "description": "Settings page. Keep {w}, {h} unchanged."
+  },
+  "paperManualHint": {
+    "message": "The size of this media is unknown – set the paper size by hand.",
+    "description": "Settings page"
+  },
+  "paperCustomHint": {
+    "message": "This paper size is sent to the printer as a custom size.",
+    "description": "Settings page"
+  },
+  "detectSection": {
+    "message": "Detection and cropping",
+    "description": "Settings page"
+  },
+  "cropMode": {
+    "message": "Cropping mode",
+    "description": "Settings page"
+  },
+  "cropAuto": {
+    "message": "Automatic (skips small text, separates multiple labels)",
+    "description": "Settings page"
+  },
+  "cropAll": {
+    "message": "All content on the page",
+    "description": "Settings page"
+  },
+  "cropLargest": {
+    "message": "Largest block only (skips e.g. instructions next to the label)",
+    "description": "Settings page"
+  },
+  "cropSplit": {
+    "message": "Each block separately (several labels on one A4 page)",
+    "description": "Settings page"
+  },
+  "padding": {
+    "message": "Padding around content [mm]",
+    "description": "Settings page"
+  },
+  "gap": {
+    "message": "Gap between blocks [mm]",
+    "description": "Settings page"
+  },
+  "threshold": {
+    "message": "White threshold (0–255)",
+    "description": "Settings page"
+  },
+  "detectHint": {
+    "message": "White areas wider than the “gap between blocks” split the content into separate blocks. A higher white threshold means lighter greys also count as content.",
+    "description": "Settings page"
+  },
+  "setActive": {
+    "message": "Set as active",
+    "description": "Settings page"
+  },
+  "duplicate": {
+    "message": "Duplicate",
+    "description": "Settings page"
+  },
+  "testFile": {
+    "message": "Test with a file…",
+    "description": "Settings page"
+  },
+  "deleteProfile": {
+    "message": "Delete profile",
+    "description": "Settings page"
+  },
+  "confirmDelete": {
+    "message": "Delete profile “{name}”?",
+    "description": "Settings page. Keep {name} unchanged."
+  },
+  "saved": {
+    "message": "Saved ✓",
+    "description": "Settings page"
+  },
+  "autoSection": {
+    "message": "Automatic printing of downloads",
+    "description": "Settings page"
+  },
+  "autoEnabled": {
+    "message": "Automatically print (with the active profile) PDFs downloaded from these domains",
+    "description": "Settings page"
+  },
+  "autoDomains": {
+    "message": "Domains – one per line, e.g. inpost.pl, dpd.com.pl, baselinker.com",
+    "description": "Settings page"
+  },
+  "notifications": {
+    "message": "Show notifications when a label is sent to the printer",
+    "description": "Settings page"
+  },
+  "backupSection": {
+    "message": "Backup & transfer",
+    "description": "Settings page"
+  },
+  "backupHint": {
+    "message": "Save all profiles and settings to a file and load them on another computer. Printers with a matching name are assigned automatically.",
+    "description": "Settings page"
+  },
+  "exportBtn": {
+    "message": "Export to file",
+    "description": "Settings page"
+  },
+  "importBtn": {
+    "message": "Import from file…",
+    "description": "Settings page"
+  },
+  "importFound": {
+    "message": "Profiles in the file ({n}): {names}. Exported {date}.",
+    "description": "Settings page. Keep {n}, {names}, {date} unchanged."
+  },
+  "importReplace": {
+    "message": "Replace all settings",
+    "description": "Settings page"
+  },
+  "importMerge": {
+    "message": "Add / update profiles",
+    "description": "Settings page"
+  },
+  "cancel": {
+    "message": "Cancel",
+    "description": "Settings page"
+  },
+  "importInvalid": {
+    "message": "This is not a valid settings file.",
+    "description": "Settings page"
+  },
+  "importDone": {
+    "message": "Imported profiles: {n}.",
+    "description": "Settings page. Keep {n} unchanged."
+  },
+  "importRemapped": {
+    "message": "Printers matched on this computer: {list}.",
+    "description": "Settings page. Keep {list} unchanged."
+  },
+  "importMissing": {
+    "message": "Choose a printer for: {list} – not found on this computer.",
+    "description": "Settings page. Keep {list} unchanged."
+  },
+  "hostSection": {
+    "message": "Native print helper",
+    "description": "Settings page"
+  },
+  "hostNotInstalled": {
+    "message": "The helper is not installed or not responding.",
+    "description": "Settings page"
+  },
+  "hostConnected": {
+    "message": "Helper connected (v{version}, {platform}).",
+    "description": "Settings page. Keep {version}, {platform} unchanged."
+  },
+  "hostExplain": {
+    "message": "Chrome does not let extensions print to a chosen printer without a dialog. A small helper program sends the finished label straight to the printer. Without it the extension still crops labels, but prints through the system print dialog.",
+    "description": "Settings page. Contains HTML tags – keep them."
+  },
+  "hostOutdated": {
+    "message": "Helper v{version} is outdated – install the latest version (v{min} or newer).",
+    "description": "Settings page. Keep {version}, {min} unchanged."
+  },
+  "helperDownloadMac": {
+    "message": "Download for macOS (.pkg)",
+    "description": "Settings page"
+  },
+  "helperDownloadWin": {
+    "message": "Download for Windows (.exe)",
+    "description": "Settings page"
+  },
+  "helperDownloadWinArm": {
+    "message": "Windows on ARM",
+    "description": "Settings page"
+  },
+  "helperAllReleases": {
+    "message": "All versions",
+    "description": "Settings page"
+  },
+  "helperStepsMac": {
+    "message": "<li>Download and open the <b>.pkg</b> file.</li><li>If macOS says the developer cannot be verified, open <b>System Settings → Privacy &amp; Security</b> and click <b>Open Anyway</b>.</li><li>Finish the installer, then click <b>Check again</b>.</li>",
+    "description": "Settings page. Contains HTML tags – keep them."
+  },
+  "helperStepsWin": {
+    "message": "<li>Download the <b>.exe</b> file and double-click it.</li><li>If Windows SmartScreen appears, click <b>More info → Run anyway</b>.</li><li>When you see “helper is installed”, restart Chrome and click <b>Check again</b>.</li>",
+    "description": "Settings page. Contains HTML tags – keep them."
+  },
+  "helperDev": {
+    "message": "Developer install (Terminal):",
+    "description": "Settings page"
+  },
+  "checkAgain": {
+    "message": "Check again",
+    "description": "Settings page"
+  },
+  "hostErrorDetail": {
+    "message": "Chrome reports: {error}",
+    "description": "Settings page. Keep {error} unchanged."
+  },
+  "hostHintNotFound": {
+    "message": "Chrome cannot find the helper registration. Run the helper installer again, then close Chrome completely and reopen it.",
+    "description": "Settings page"
+  },
+  "hostHintForbidden": {
+    "message": "The helper is installed, but it does not allow this copy of the extension (different extension ID).",
+    "description": "Settings page"
+  },
+  "hostHintCrashed": {
+    "message": "The helper was found but could not start. Check whether an antivirus blocked it, then run the installer again.",
+    "description": "Settings page"
+  },
+  "idMismatch": {
+    "message": "This copy of the extension has the ID {id}, but the helper expects {expected}. This happens when the extension is loaded from another package (e.g. the Web Store zip). Load the “extension” folder or extension-unpacked.zip from the release instead – or allow this ID with the command below:",
+    "description": "Settings page. Keep {id}, {expected} unchanged."
+  },
+  "donate": {
+    "message": "☕ Support the project",
+    "description": "Settings page"
+  },
+  "donateHint": {
+    "message": "Donations help pay for code signing, so the helper installs without security warnings.",
+    "description": "Settings page"
+  },
+  "extensionId": {
+    "message": "This extension’s ID:",
+    "description": "Settings page"
+  },
+  "labels_one": {
+    "message": "{n} label",
+    "description": "General. Number of labels. Plural forms: add the forms your language needs (_one, _few, _many, _other)."
+  },
+  "labels_other": {
+    "message": "{n} labels",
+    "description": "General. Number of labels. Plural forms: add the forms your language needs (_one, _few, _many, _other)."
+  },
+  "pages_one": {
+    "message": "{n} page",
+    "description": "General. Number of source PDF pages (preview page summary). Plural forms as needed."
+  },
+  "pages_other": {
+    "message": "{n} pages",
+    "description": "General. Number of source PDF pages (preview page summary). Plural forms as needed."
+  },
+  "outPages_one": {
+    "message": "{n} output page",
+    "description": "General. Number of printed pages (preview page summary). Plural forms as needed."
+  },
+  "outPages_other": {
+    "message": "{n} output pages",
+    "description": "General. Number of printed pages (preview page summary). Plural forms as needed."
+  },
+  "statusSent": {
+    "message": "✓ Sent {labels} to {printer}",
+    "description": "Toolbar popup. Popup status after printing. {labels} = e.g. \"2 labels\", {printer} = printer name."
+  },
+  "infoSummary": {
+    "message": "Detected <b>{labels}</b> on {pages} → {outPages} {w}×{h} mm{raster}.",
+    "description": "Preview and print page. Preview page summary. {labels}, {pages}, {outPages} are already translated phrases; {raster} is the raster mode note or empty. Contains HTML tags – keep them."
+  },
+  "rasterMode": {
+    "message": " (raster mode)",
+    "description": "General. Appended to the preview summary when the label was printed as an image. Starts with a space."
+  },
+  "help": {
+    "message": "Help",
+    "description": "Settings page. Link to the user guide in the chosen language."
   }
 }

@@ -1,0 +1,32 @@
+# Checks translations on every Pull Request that touches them.
+# Errors (broken files, wrong placeholders or HTML) fail the check;
+# missing texts are only listed as warnings – English is shown instead.
+name: Translations
+
+on:
+  pull_request:
+    paths:
+      - 'extension/_locales/**'
+      - 'extension/languages.json'
+      - 'docs/guide/**'
+      - 'scripts/check-i18n.mjs'
+  push:
+    branches: [main]
+    paths:
+      - 'extension/_locales/**'
+      - 'extension/languages.json'
+      - 'docs/guide/**'
+      - 'scripts/check-i18n.mjs'
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: node scripts/check-i18n.mjs

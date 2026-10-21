@@ -1,5 +1,5 @@
 import { loadSettings, activeProfile, profileSummary, b64ToBytes, bytesToB64, looksLikePdf } from './settings.js';
-import { makeT, applyI18n, errorText } from './i18n.js';
+import { getT, applyI18n, errorText } from './i18n.js';
 import { processPdf } from './engine.js';
 
 const $ = (id) => document.getElementById(id);
@@ -20,8 +20,11 @@ function profileId() { return $('profile').value; }
 function renderInfo(info) {
   const rows = info.details.map((d, i) => `<tr><td>${i + 1}</td><td>${d.page}</td><td>${d.sourceMm.w}×${d.sourceMm.h}</td><td>${d.cropMm.w}×${d.cropMm.h}</td><td>${d.scale ? Math.round(d.scale * 100) + '%' : '–'}</td><td>${d.rotated ? d.rotated + '°' : '–'}</td></tr>`).join('');
   const summary = t('infoSummary', {
-    labels: t('labels', { n: info.labels }), pages: info.sourcePages, out: info.outputPages,
-    w: info.paper.w, h: info.paper.h, raster: info.mode === 'raster',
+    labels: t('labels', { n: info.labels }),
+    pages: t('pages', { n: info.sourcePages }),
+    outPages: t('outPages', { n: info.outputPages }),
+    w: info.paper.w, h: info.paper.h,
+    raster: info.mode === 'raster' ? t('rasterMode') : '',
   });
   $('info').innerHTML = `<p class="muted">${summary}</p>
     <table><tr><th>#</th><th>${t('thPage')}</th><th>${t('thSource')}</th><th>${t('thCrop')}</th><th>${t('thScale')}</th><th>${t('thRotation')}</th></tr>${rows}</table>`;
@@ -99,8 +102,8 @@ $('print').onclick = async () => {
 };
 
 settings = await loadSettings();
-t = makeT(settings.language);
-document.documentElement.lang = settings.language;
+t = await getT(settings.language);
+document.documentElement.lang = t.locale;
 applyI18n(t);
 for (const p of settings.profiles) $('profile').add(new Option(`${p.name} (${profileSummary(p, t)})`, p.id));
 $('profile').value = settings.activeProfileId;

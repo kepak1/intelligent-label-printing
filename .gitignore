@@ -5,3 +5,4 @@ dist/
 .claude/
 # Chrome Web Store materials, blog posts and other local-only files
 store/
+plans/

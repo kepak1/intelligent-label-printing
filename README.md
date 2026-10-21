@@ -16,7 +16,7 @@ A Chrome extension that prints courier labels in one click. The label in the PDF
 
 **Free and open source, forever.** No subscription, no trial, no account, no paid tier: every feature is free for everyone. Labels are processed only on your computer and never uploaded anywhere (see the [privacy policy](PRIVACY.md)).
 
-The interface is in English by default. Polish is available: switch it in the popup (EN/PL) or under **Settings → Language**.
+The extension starts in your browser's language if it has a translation (currently English and Polish), otherwise in English. Switch it any time in the popup or under **Settings → Language**. A short user guide is available in [English](docs/guide/en.md) and [Polish](docs/guide/pl.md). The **Help** link in the settings opens it in the chosen language.
 
 ## Installation
 
@@ -103,9 +103,10 @@ Printer names are matched ignoring punctuation, so `Brother_QL_1110NWB` (macOS) 
 extension/        Chrome extension (Manifest V3)
   engine.js       content detection and PDF composition (pdf.js + pdf-lib)
   background.js   fetching PDFs, context menu, printing through the helper
-  i18n.js         UI translations (English, Polish)
+  i18n.js         loads the chosen language from _locales (English fallback, plural rules)
   popup.*, options.*, print.*   user interface
-  _locales/       extension name and description for the Chrome Web Store / chrome://extensions
+  _locales/       all texts, one messages.json per language (also the store name and description)
+  languages.json  the languages offered in the language menu
   config.js       project links: helper downloads, donation pages, minimum helper version
 helper/           Native Messaging helper in Go (one binary, no dependencies)
   print_cups.go   macOS / Linux printing (CUPS)
@@ -113,6 +114,8 @@ helper/           Native Messaging helper in Go (one binary, no dependencies)
   install_*.go    self-registration with the browsers
   build.sh        builds everything into dist/
 keys/             the extension's private key – keep it safe, never publish it
+docs/guide/       short user guide, one file per language
+scripts/          check-i18n.mjs – translation check (also runs on Pull Requests)
 test-pdfs/        sample labels for testing
 ```
 
@@ -148,6 +151,9 @@ The **☕ Support the project** button in the settings opens the page set in `ex
 - `donatePl`: e.g. buycoffee.to, used when the UI is in Polish.
 
 The button is hidden while both are empty.
+
+## Translations
+Help translate the extension into your language. It's one file per language, and you don't need to know JavaScript. See [TRANSLATING.md](TRANSLATING.md). Every Pull Request that touches translations is checked automatically. Missing texts show in English until they are translated.
 
 ## Support
 If the extension saves you time, you can support it on [Ko-fi](https://ko-fi.com/kepak1). Donations go towards code-signing certificates, so the helper installs without security warnings on macOS and Windows.

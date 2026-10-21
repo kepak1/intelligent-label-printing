@@ -1,0 +1,10 @@
+{
+  "en": {
+    "name": "English",
+    "guide": true
+  },
+  "pl": {
+    "name": "Polski",
+    "guide": true
+  }
+}

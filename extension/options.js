@@ -1,5 +1,5 @@
 import { loadSettings, saveSettings, newProfile, PAPER_PRESETS, paperSize, profileSummary, isSheetMode } from './settings.js';
-import { LANGUAGES, makeT, applyI18n } from './i18n.js';
+import { getLanguages, getT, applyI18n } from './i18n.js';
 import { LINKS, MIN_HELPER_VERSION, EXPECTED_EXTENSION_ID, donateUrl, helperConfigured, versionLess } from './config.js';
 
 const $ = (id) => document.getElementById(id);
@@ -192,10 +192,13 @@ function renderAll() {
   renderEditor();
 }
 
-function applyLanguage() {
-  t = makeT(settings.language);
-  document.documentElement.lang = settings.language;
+async function applyLanguage() {
+  t = await getT(settings.language);
+  document.documentElement.lang = t.locale;
   applyI18n(t);
+  // help: the user guide in the chosen language, English if there is none yet
+  const languages = await getLanguages();
+  $('help').href = LINKS.guide + (languages[settings.language]?.guide ? settings.language : 'en') + '.md';
   const donate = donateUrl(settings.language);
   $('donate').hidden = !donate;
   if (donate) $('donate').href = donate;
@@ -281,8 +284,8 @@ function refreshGlobal() {
   $('notifications').checked = settings.notifications;
 }
 
-function bindGlobal() {
-  for (const [code, name] of Object.entries(LANGUAGES)) $('lang').add(new Option(name, code));
+async function bindGlobal() {
+  for (const [code, { name }] of Object.entries(await getLanguages())) $('lang').add(new Option(name, code));
   $('lang').onchange = (e) => { settings.language = e.target.value; save(); applyLanguage(); };
   refreshGlobal();
   $('autoEnabled').onchange = (e) => { settings.autoPrint.enabled = e.target.checked; save(); };
@@ -373,7 +376,7 @@ async function finishImport(mode) {
   syncFromMedia();
   await saveSettings(settings);
   refreshGlobal();
-  applyLanguage();
+  await applyLanguage();
   showImportResult([
     t('importDone', { n: incoming.length }),
     remapped.length ? t('importRemapped', { list: remapped.join(', ') }) : '',
@@ -397,7 +400,7 @@ function bindBackup() {
       return showImportResult([t('importInvalid')], 'err');
     }
     const names = pendingImport.settings.profiles.map((p) => p.name).join(', ');
-    const date = pendingImport.exportedAt ? new Date(pendingImport.exportedAt).toLocaleString(settings.language) : '?';
+    const date = pendingImport.exportedAt ? new Date(pendingImport.exportedAt).toLocaleString(t.locale) : '?';
     $('importText').textContent = t('importFound', { n: pendingImport.settings.profiles.length, names, date });
     $('importBox').hidden = false;
   };
@@ -511,7 +514,7 @@ $('extId').textContent = chrome.runtime.id;
 $('installCmd').textContent = 'bash ~/Labelprinter/helper/build.sh && ~/Labelprinter/dist/ilp-host-macos install';
 $('checkHost').onclick = () => loadPrinters();
 bindEditor();
-bindGlobal();
+await bindGlobal();
 bindBackup();
-applyLanguage();
+await applyLanguage();
 loadPrinters();

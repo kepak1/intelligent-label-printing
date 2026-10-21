@@ -1,6 +1,6 @@
 // Shared settings and printer profiles (Intelligent label printing).
 
-import { makeT } from './i18n.js';
+import { getT, detectLanguage } from './i18n.js';
 
 // Paper presets in mm; labels come from i18n (key paper_<id>).
 export const PAPER_PRESETS = {
@@ -39,8 +39,8 @@ export function newProfile(overrides = {}) {
   };
 }
 
-export function defaultSettings(language = 'en') {
-  const t = makeT(language);
+export async function defaultSettings(language = 'en') {
+  const t = await getT(language);
   const a4 = newProfile({ id: 'pA4', name: t('defaultProfileA4'), paper: 'A4', paperW: 210, paperH: 297, media: 'A4' });
   const a6 = newProfile({ id: 'pA6', name: t('defaultProfileA6'), paper: 'A6' });
   return {
@@ -65,7 +65,8 @@ export function isSheetMode(profile) {
 export async function loadSettings() {
   const { settings } = await chrome.storage.local.get('settings');
   if (!settings || !Array.isArray(settings.profiles) || !settings.profiles.length) {
-    const s = defaultSettings();
+    // first run: the browser's language if the extension has it, else English
+    const s = await defaultSettings(await detectLanguage());
     await chrome.storage.local.set({ settings: s });
     return s;
   }

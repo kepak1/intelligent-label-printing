@@ -7,5 +7,548 @@
   },
   "cmdPrintCurrent": {
     "message": "Drukuj etykietę z bieżącej karty (aktywny profil)"
+  },
+  "appName": {
+    "message": "Intelligent label printing"
+  },
+  "noPrinter": {
+    "message": "brak drukarki"
+  },
+  "settings": {
+    "message": "Ustawienia"
+  },
+  "language": {
+    "message": "Język"
+  },
+  "loading": {
+    "message": "Ładowanie…"
+  },
+  "unknownError": {
+    "message": "Nieznany błąd"
+  },
+  "paper_A4": {
+    "message": "A4 (210×297 mm) – etykieta w polu A6 do odcięcia"
+  },
+  "paper_A6": {
+    "message": "A6 (105×148 mm)"
+  },
+  "paper_100x150": {
+    "message": "100×150 mm (typowa etykieta termiczna)"
+  },
+  "paper_4x6": {
+    "message": "4×6\" (101,6×152,4 mm)"
+  },
+  "paper_custom": {
+    "message": "Własny rozmiar"
+  },
+  "defaultProfileA4": {
+    "message": "Drukarka A4 (cięcie do A6)"
+  },
+  "defaultProfileA6": {
+    "message": "Drukarka etykiet A6"
+  },
+  "newProfileName": {
+    "message": "Profil {n}"
+  },
+  "copySuffix": {
+    "message": " (kopia)"
+  },
+  "printTab": {
+    "message": "Drukuj PDF z tej karty"
+  },
+  "preview": {
+    "message": "Podgląd"
+  },
+  "previewHint": {
+    "message": "Podgląd bez drukowania"
+  },
+  "recentPdfs": {
+    "message": "Ostatnio pobrane PDF-y"
+  },
+  "noDownloads": {
+    "message": "Brak pobranych plików PDF."
+  },
+  "print": {
+    "message": "Drukuj"
+  },
+  "hostChecking": {
+    "message": "Sprawdzam host drukowania…"
+  },
+  "hostOk": {
+    "message": "Host drukowania połączony"
+  },
+  "hostMissing": {
+    "message": "Brak hosta – druk przez okno systemowe"
+  },
+  "openFile": {
+    "message": "Otwórz plik z dysku…"
+  },
+  "statusPrinting": {
+    "message": "Przetwarzam i wysyłam do drukarki…"
+  },
+  "statusPreparing": {
+    "message": "Przygotowuję podgląd…"
+  },
+  "justNow": {
+    "message": "przed chwilą"
+  },
+  "minAgo": {
+    "message": "{n} min temu"
+  },
+  "hoursAgo": {
+    "message": "{n} godz. temu"
+  },
+  "NO_CONTENT": {
+    "message": "Nie znaleziono żadnej treści w pliku PDF (puste strony?)."
+  },
+  "errDownloadMissing": {
+    "message": "Nie znaleziono pobranego pliku."
+  },
+  "errDownloadFailed": {
+    "message": "Chrome nie mógł pobrać PDF-a z tego linku."
+  },
+  "errHostNeededRead": {
+    "message": "Do odczytu pobranych plików potrzebny jest natywny host (zobacz ustawienia)."
+  },
+  "errTabUnreadable": {
+    "message": "Tej karty nie da się odczytać (to nie jest adres http/https/plik). Pobierz PDF i użyj listy „Ostatnio pobrane”."
+  },
+  "errHttp": {
+    "message": "Nie udało się pobrać PDF (HTTP {status})."
+  },
+  "errUnknownSource": {
+    "message": "Nieznane źródło pliku."
+  },
+  "errNotPdf": {
+    "message": "Pobrany plik nie jest PDF-em (może strona wymaga zalogowania?)."
+  },
+  "errProcessing": {
+    "message": "Błąd przetwarzania PDF."
+  },
+  "errNoPrinter": {
+    "message": "Profil nie ma wybranej drukarki."
+  },
+  "errPrinter": {
+    "message": "Drukarka: {error}"
+  },
+  "fallbackNoPrinter": {
+    "message": "Profil nie ma wybranej drukarki – otwarto okno drukowania."
+  },
+  "fallbackNoHost": {
+    "message": "Brak natywnego hosta – otwarto systemowe okno drukowania."
+  },
+  "notifSentTitle": {
+    "message": "Wysłano do druku"
+  },
+  "notifSentBody": {
+    "message": "{name} → {printer} ({labels})"
+  },
+  "notifErrorTitle": {
+    "message": "Błąd drukowania etykiety"
+  },
+  "menuPrint": {
+    "message": "Drukuj: {name}"
+  },
+  "menuPreview": {
+    "message": "Podgląd (aktywny profil)"
+  },
+  "previewTitle": {
+    "message": "Podgląd i wydruk"
+  },
+  "dropHere": {
+    "message": "Upuść tu plik PDF z etykietą"
+  },
+  "dropOr": {
+    "message": "lub <u>kliknij, aby wybrać</u>"
+  },
+  "printerProfile": {
+    "message": "Profil drukarki"
+  },
+  "printOnProfile": {
+    "message": "Drukuj na drukarce profilu"
+  },
+  "printSystem": {
+    "message": "Drukuj przez okno systemowe"
+  },
+  "savePdf": {
+    "message": "Zapisz przetworzony PDF"
+  },
+  "profileSettings": {
+    "message": "Ustawienia profili"
+  },
+  "noDocument": {
+    "message": "Brak dokumentu"
+  },
+  "thPage": {
+    "message": "Str."
+  },
+  "thSource": {
+    "message": "Strona [mm]"
+  },
+  "thCrop": {
+    "message": "Wycięto [mm]"
+  },
+  "thScale": {
+    "message": "Skala"
+  },
+  "thRotation": {
+    "message": "Obrót"
+  },
+  "processing": {
+    "message": "Przetwarzam…"
+  },
+  "profileStatus": {
+    "message": "Profil: {name} – {summary}"
+  },
+  "notPdf": {
+    "message": "To nie jest plik PDF."
+  },
+  "sending": {
+    "message": "Wysyłam do drukarki…"
+  },
+  "sentJob": {
+    "message": "✓ Wysłano do druku ({job})"
+  },
+  "noHostPrint": {
+    "message": "Brak natywnego hosta – użyj „Drukuj przez okno systemowe” albo zainstaluj host (Ustawienia)."
+  },
+  "printError": {
+    "message": "Błąd drukowania"
+  },
+  "jobExpired": {
+    "message": "Zadanie wygasło – wybierz plik ponownie."
+  },
+  "optSubtitle": {
+    "message": "Profile drukarek i sposób przycinania etykiet"
+  },
+  "active": {
+    "message": "AKTYWNY"
+  },
+  "addProfile": {
+    "message": "+ Dodaj profil"
+  },
+  "profileName": {
+    "message": "Nazwa profilu"
+  },
+  "printerSection": {
+    "message": "Drukarka"
+  },
+  "systemPrinter": {
+    "message": "Drukarka (z systemu)"
+  },
+  "refreshPrinters": {
+    "message": "Odśwież listę drukarek"
+  },
+  "noPrinterOption": {
+    "message": "— nie wybrano (okno systemowe) —"
+  },
+  "defaultMark": {
+    "message": " (domyślna)"
+  },
+  "unavailable": {
+    "message": " (niedostępna)"
+  },
+  "driverMedia": {
+    "message": "Rozmiar nośnika w sterowniku"
+  },
+  "driverDefault": {
+    "message": "— domyślny sterownika{media} —"
+  },
+  "mediaGroupCustom": {
+    "message": "Własne rozmiary (okno drukowania macOS)"
+  },
+  "mediaGroupDriver": {
+    "message": "Rozmiary sterownika"
+  },
+  "mediaFromPaper": {
+    "message": "Własny rozmiar = papier ustawiony niżej"
+  },
+  "lastUsedMark": {
+    "message": " ★ ostatnio używany na tym Macu"
+  },
+  "printerScaling": {
+    "message": "Skalowanie po stronie drukarki"
+  },
+  "scalingNone": {
+    "message": "Brak – 100% (zalecane)"
+  },
+  "scalingFit": {
+    "message": "Dopasuj do strony"
+  },
+  "copies": {
+    "message": "Liczba kopii"
+  },
+  "paperSection": {
+    "message": "Papier i układ"
+  },
+  "loadedPaper": {
+    "message": "Papier załadowany w drukarce"
+  },
+  "widthMm": {
+    "message": "Szerokość [mm]"
+  },
+  "heightMm": {
+    "message": "Wysokość [mm]"
+  },
+  "sheetHint": {
+    "message": "Etykieta zostanie wydrukowana w polu o wymiarach A6 (105×148 mm), które wystarczy odciąć z arkusza A4."
+  },
+  "perSheet": {
+    "message": "Etykiet na arkusz A4"
+  },
+  "perSheet2": {
+    "message": "2 (górny rząd)"
+  },
+  "cutMarks": {
+    "message": "Rysuj linie cięcia"
+  },
+  "position": {
+    "message": "Pozycja pola A6 na arkuszu"
+  },
+  "posTl": {
+    "message": "lewa<br>góra"
+  },
+  "posTr": {
+    "message": "prawa<br>góra"
+  },
+  "posBl": {
+    "message": "lewa<br>dół"
+  },
+  "posBr": {
+    "message": "prawa<br>dół"
+  },
+  "margin": {
+    "message": "Margines wewnątrz pola etykiety [mm]"
+  },
+  "autoRotate": {
+    "message": "Automatycznie obracaj etykietę"
+  },
+  "upscale": {
+    "message": "Powiększaj małe etykiety"
+  },
+  "unprintable": {
+    "message": "Niedrukowalne brzegi według sterownika (uwzględniane automatycznie): lewy {l}, górny {t}, prawy {r}, dolny {b} mm."
+  },
+  "continuousHint": {
+    "message": "To taśma ciągła – strona sterownika ma {mw}×{mh} mm. Dla etykiet wycinanych wybierz pasujący rozmiar (np. „102 mm x 152 mm”)."
+  },
+  "paperFromMedia": {
+    "message": "Papier: {w} × {h} mm – na podstawie rozmiaru nośnika powyżej."
+  },
+  "paperFromMediaSheet": {
+    "message": "Papier: A4 ({w} × {h} mm) – na podstawie rozmiaru nośnika powyżej. Etykieta trafi w pole A6 do odcięcia."
+  },
+  "paperManualHint": {
+    "message": "Rozmiar tego nośnika jest nieznany – ustaw rozmiar papieru ręcznie."
+  },
+  "paperCustomHint": {
+    "message": "Ten rozmiar papieru zostanie wysłany do drukarki jako rozmiar własny."
+  },
+  "detectSection": {
+    "message": "Wykrywanie i przycinanie"
+  },
+  "cropMode": {
+    "message": "Tryb przycinania"
+  },
+  "cropAuto": {
+    "message": "Automatyczny (pomija drobny tekst, rozdziela kilka etykiet)"
+  },
+  "cropAll": {
+    "message": "Cała treść strony"
+  },
+  "cropLargest": {
+    "message": "Tylko największy blok (pomija np. instrukcje obok etykiety)"
+  },
+  "cropSplit": {
+    "message": "Każdy blok osobno (kilka etykiet na jednej stronie A4)"
+  },
+  "padding": {
+    "message": "Zapas wokół treści [mm]"
+  },
+  "gap": {
+    "message": "Przerwa między blokami [mm]"
+  },
+  "threshold": {
+    "message": "Próg bieli (0–255)"
+  },
+  "detectHint": {
+    "message": "Białe obszary szersze niż „przerwa między blokami” rozdzielają treść na osobne bloki. Wyższy próg bieli = jaśniejsze szarości też liczą się jako treść."
+  },
+  "setActive": {
+    "message": "Ustaw jako aktywny"
+  },
+  "duplicate": {
+    "message": "Duplikuj"
+  },
+  "testFile": {
+    "message": "Testuj na pliku…"
+  },
+  "deleteProfile": {
+    "message": "Usuń profil"
+  },
+  "confirmDelete": {
+    "message": "Usunąć profil „{name}”?"
+  },
+  "saved": {
+    "message": "Zapisano ✓"
+  },
+  "autoSection": {
+    "message": "Automatyczny druk pobranych plików"
+  },
+  "autoEnabled": {
+    "message": "Drukuj automatycznie (aktywnym profilem) PDF-y pobrane z poniższych domen"
+  },
+  "autoDomains": {
+    "message": "Domeny – po jednej w linii, np. inpost.pl, dpd.com.pl, baselinker.com"
+  },
+  "notifications": {
+    "message": "Pokazuj powiadomienia o wysłaniu do druku"
+  },
+  "backupSection": {
+    "message": "Kopia ustawień i przenoszenie"
+  },
+  "backupHint": {
+    "message": "Zapisz wszystkie profile i ustawienia do pliku i wczytaj je na innym komputerze. Drukarki o pasującej nazwie zostaną przypisane automatycznie."
+  },
+  "exportBtn": {
+    "message": "Zapisz do pliku"
+  },
+  "importBtn": {
+    "message": "Wczytaj z pliku…"
+  },
+  "importFound": {
+    "message": "Profile w pliku ({n}): {names}. Wyeksportowano {date}."
+  },
+  "importReplace": {
+    "message": "Zastąp wszystkie ustawienia"
+  },
+  "importMerge": {
+    "message": "Dodaj / zaktualizuj profile"
+  },
+  "cancel": {
+    "message": "Anuluj"
+  },
+  "importInvalid": {
+    "message": "To nie jest prawidłowy plik ustawień."
+  },
+  "importDone": {
+    "message": "Wczytano profile: {n}."
+  },
+  "importRemapped": {
+    "message": "Dopasowano drukarki na tym komputerze: {list}."
+  },
+  "importMissing": {
+    "message": "Wybierz drukarkę dla: {list} – nie ma jej na tym komputerze."
+  },
+  "hostSection": {
+    "message": "Natywny host drukowania"
+  },
+  "hostNotInstalled": {
+    "message": "Host nie jest zainstalowany lub nie odpowiada."
+  },
+  "hostConnected": {
+    "message": "Host połączony (v{version}, {platform})."
+  },
+  "hostExplain": {
+    "message": "Chrome nie pozwala wtyczkom drukować bez okna dialogowego na wybraną drukarkę. Mały program pomocniczy (helper) wysyła gotową etykietę prosto do drukarki. Bez niego wtyczka nadal przycina etykiety, ale drukuje przez systemowe okno drukowania."
+  },
+  "hostOutdated": {
+    "message": "Helper v{version} jest nieaktualny – zainstaluj najnowszą wersję (v{min} lub nowszą)."
+  },
+  "helperDownloadMac": {
+    "message": "Pobierz dla macOS (.pkg)"
+  },
+  "helperDownloadWin": {
+    "message": "Pobierz dla Windows (.exe)"
+  },
+  "helperDownloadWinArm": {
+    "message": "Windows na ARM"
+  },
+  "helperAllReleases": {
+    "message": "Wszystkie wersje"
+  },
+  "helperStepsMac": {
+    "message": "<li>Pobierz i otwórz plik <b>.pkg</b>.</li><li>Jeśli macOS napisze, że nie może zweryfikować dewelopera, otwórz <b>Ustawienia systemowe → Prywatność i ochrona</b> i kliknij <b>Otwórz mimo to</b>.</li><li>Dokończ instalację i kliknij <b>Sprawdź ponownie</b>.</li>"
+  },
+  "helperStepsWin": {
+    "message": "<li>Pobierz plik <b>.exe</b> i kliknij go dwukrotnie.</li><li>Jeśli pojawi się Windows SmartScreen, kliknij <b>Więcej informacji → Uruchom mimo to</b>.</li><li>Gdy zobaczysz komunikat o instalacji, uruchom ponownie Chrome i kliknij <b>Sprawdź ponownie</b>.</li>"
+  },
+  "helperDev": {
+    "message": "Instalacja deweloperska (Terminal):"
+  },
+  "checkAgain": {
+    "message": "Sprawdź ponownie"
+  },
+  "hostErrorDetail": {
+    "message": "Chrome zgłasza: {error}"
+  },
+  "hostHintNotFound": {
+    "message": "Chrome nie widzi rejestracji helpera. Uruchom instalator helpera ponownie, a potem całkowicie zamknij i otwórz Chrome."
+  },
+  "hostHintForbidden": {
+    "message": "Helper jest zainstalowany, ale nie wpuszcza tej kopii wtyczki (inne ID rozszerzenia)."
+  },
+  "hostHintCrashed": {
+    "message": "Helper został znaleziony, ale nie mógł się uruchomić. Sprawdź, czy nie zablokował go antywirus, i uruchom instalator ponownie."
+  },
+  "idMismatch": {
+    "message": "Ta kopia wtyczki ma ID {id}, a helper oczekuje {expected}. Dzieje się tak, gdy wtyczka jest załadowana z innej paczki (np. zip do Web Store). Załaduj folder „extension” albo extension-unpacked.zip z wydania – albo zezwól na to ID poleceniem poniżej:"
+  },
+  "donate": {
+    "message": "☕ Wesprzyj projekt"
+  },
+  "donateHint": {
+    "message": "Wpłaty pomogą opłacić podpisywanie aplikacji, żeby helper instalował się bez ostrzeżeń."
+  },
+  "extensionId": {
+    "message": "ID tego rozszerzenia:"
+  },
+  "labels_one": {
+    "message": "{n} etykietę"
+  },
+  "labels_few": {
+    "message": "{n} etykiety"
+  },
+  "labels_many": {
+    "message": "{n} etykiet"
+  },
+  "labels_other": {
+    "message": "{n} etykiety"
+  },
+  "pages_one": {
+    "message": "{n} str."
+  },
+  "pages_few": {
+    "message": "{n} str."
+  },
+  "pages_many": {
+    "message": "{n} str."
+  },
+  "pages_other": {
+    "message": "{n} str."
+  },
+  "outPages_one": {
+    "message": "{n} str. wydruku"
+  },
+  "outPages_few": {
+    "message": "{n} str. wydruku"
+  },
+  "outPages_many": {
+    "message": "{n} str. wydruku"
+  },
+  "outPages_other": {
+    "message": "{n} str. wydruku"
+  },
+  "statusSent": {
+    "message": "✓ Wysłano {labels} na {printer}"
+  },
+  "infoSummary": {
+    "message": "Wykryto <b>{labels}</b> na {pages} → {outPages} {w}×{h} mm{raster}."
+  },
+  "rasterMode": {
+    "message": " (tryb rastrowy)"
+  },
+  "help": {
+    "message": "Pomoc"
   }
 }

@@ -6,6 +6,8 @@ export const LINKS = {
   helperMac: 'https://github.com/kepak1/intelligent-label-printing/releases/latest/download/LabelPrintingHelper-macOS.pkg',
   helperWindows: 'https://github.com/kepak1/intelligent-label-printing/releases/latest/download/LabelPrintingHelper-Windows-x64.exe',
   helperWindowsArm: 'https://github.com/kepak1/intelligent-label-printing/releases/latest/download/LabelPrintingHelper-Windows-arm64.exe',
+  // User guide per language: <guide><language>.md
+  guide: 'https://github.com/kepak1/intelligent-label-printing/blob/main/docs/guide/',
   // Donations (they fund code signing of the installers). Empty = button hidden.
   donate: 'https://ko-fi.com/kepak1',
   donatePl: '', // optional separate page for the Polish UI, e.g. buycoffee.to

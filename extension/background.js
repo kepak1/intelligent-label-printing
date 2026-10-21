@@ -2,7 +2,7 @@
 // (offscreen document) and prints it through the native helper (CUPS `lp`).
 
 import { loadSettings, activeProfile, paperSize, bytesToB64, b64ToBytes, looksLikePdf } from './settings.js';
-import { makeT, errorText, I18nError } from './i18n.js';
+import { getT, errorText, I18nError } from './i18n.js';
 
 const HOST = 'com.intelligent_label_printing.host';
 
@@ -201,7 +201,7 @@ function badge(text, color) {
 // action: 'print' | 'preview' | 'process'
 async function run(source, { profileId, action = 'print' } = {}) {
   const settings = await loadSettings();
-  const t = makeT(settings.language);
+  const t = await getT(settings.language);
   const profile = activeProfile(settings, profileId);
   badge('…', '#64748b');
   try {
@@ -244,7 +244,7 @@ const MENU_CONTEXTS = ['link', 'page', 'frame'];
 
 async function rebuildMenus() {
   const settings = await loadSettings();
-  const t = makeT(settings.language);
+  const t = await getT(settings.language);
   await chrome.contextMenus.removeAll();
   chrome.contextMenus.create({ id: 'root', title: t('appName'), contexts: MENU_CONTEXTS });
   for (const p of settings.profiles) {
@@ -315,7 +315,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         return native(msg.payload);
       case 'printProcessed': {
         const settings = await loadSettings();
-        const t = makeT(settings.language);
+        const t = await getT(settings.language);
         const profile = activeProfile(settings, msg.profileId);
         if (!profile.printer) return { ok: false, noPrinter: true, error: t('errNoPrinter') };
         const r = await nativePrint(msg.b64, profile, msg.name || 'Label');

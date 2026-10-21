@@ -1,5 +1,5 @@
 import { loadSettings, saveSettings, profileSummary } from './settings.js';
-import { LANGUAGES, makeT, applyI18n } from './i18n.js';
+import { getLanguages, getT, applyI18n } from './i18n.js';
 
 const $ = (id) => document.getElementById(id);
 let settings;
@@ -38,7 +38,7 @@ async function run(source, action = 'print') {
     if (!r?.ok) return setStatus(r?.error || t('unknownError'), 'err');
     if (action === 'preview') return window.close();
     if (r.fallback) setStatus(r.fallback, 'info');
-    else setStatus(t('statusSent', { labels: t('labels', { n: r.info.labels }), printer: r.printer, job: r.job }), 'ok');
+    else setStatus(t('statusSent', { labels: t('labels', { n: r.info.labels }), printer: r.printer }) + (r.job ? ` (${r.job})` : ''), 'ok');
   } finally {
     buttons.forEach((b) => (b.disabled = false));
   }
@@ -54,7 +54,7 @@ function timeAgo(iso) {
   if (s < 60) return t('justNow');
   if (s < 3600) return t('minAgo', { n: Math.round(s / 60) });
   if (s < 86400) return t('hoursAgo', { n: Math.round(s / 3600) });
-  return new Date(iso).toLocaleDateString(settings.language);
+  return new Date(iso).toLocaleDateString(t.locale);
 }
 
 async function renderDownloads() {
@@ -92,9 +92,9 @@ async function checkHost() {
   $('hostState').append(t(r?.ok ? 'hostOk' : 'hostMissing'));
 }
 
-function render() {
-  t = makeT(settings.language);
-  document.documentElement.lang = settings.language;
+async function render() {
+  t = await getT(settings.language);
+  document.documentElement.lang = t.locale;
   applyI18n(t);
   renderProfiles();
   renderDownloads();
@@ -107,8 +107,8 @@ $('printTab').onclick = async () => run(await activeTabSource());
 $('previewTab').onclick = async () => run(await activeTabSource(), 'preview');
 
 settings = await loadSettings();
-for (const [code, name] of Object.entries(LANGUAGES)) {
-  const o = new Option(code.toUpperCase(), code);
+for (const [code, { name }] of Object.entries(await getLanguages())) {
+  const o = new Option(code.split('_')[0].toUpperCase(), code);
   o.title = name;
   $('lang').add(o);
 }
@@ -116,6 +116,6 @@ $('lang').value = settings.language;
 $('lang').onchange = async (e) => {
   settings.language = e.target.value;
   await saveSettings(settings);
-  render();
+  await render();
 };
-render();
+await render();
